@@ -289,7 +289,7 @@ namespace mySnapshot
                txtbx_results.AppendText("\r\nReply from " + reply.Address + 
                                          ": bytes=" + reply.Buffer.Length +
                                          "  time =" + +reply.RoundtripTime +"ms" +
-                                         "  TTL=" + reply.Options.Ttl);
+                                         "  TTL=" + reply.Options.Ttl + "\r\n");
             }
             else
             {
