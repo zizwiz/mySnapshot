@@ -1,0 +1,304 @@
+﻿using System;
+using System.Drawing;
+using System.IO;
+using System.Net;
+using System.Net.Http;
+using System.Net.NetworkInformation;
+using System.Net.Sockets;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Timers;
+using System.Windows.Forms;
+using System.Xml;
+using Timer = System.Windows.Forms.Timer;
+
+namespace mySnapshot
+{
+    public partial class Form1 : Form
+    {
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+        private void btn_findURI_Click(object sender, EventArgs e)
+        {
+            bool flag = true;
+
+            // WS-Discovery multicast address and port
+            string multicastAddress = "239.255.255.250";
+            int multicastPort = 3702;
+
+            // Create UDP client
+            UdpClient udpClient = new UdpClient();
+            udpClient.EnableBroadcast = true;
+
+            IPEndPoint endPoint = new IPEndPoint(IPAddress.Parse(multicastAddress), multicastPort);
+
+
+            // Build WS-Discovery Probe message (SOAP XML)
+            string probeMessage = @"<?xml version=""1.0"" encoding=""UTF-8""?>
+        <Envelope xmlns=""http://www.w3.org/2003/05/soap-envelope""
+                  xmlns:a=""http://schemas.xmlsoap.org/ws/2004/08/addressing""
+                  xmlns:d=""http://schemas.xmlsoap.org/ws/2005/04/discovery"">
+          <Header>
+            <a:Action mustUnderstand=""1"">http://schemas.xmlsoap.org/ws/2005/04/discovery/Probe</a:Action>
+            <a:MessageID>urn:uuid:" + Guid.NewGuid().ToString() + @"</a:MessageID>
+            <a:To mustUnderstand=""1"">urn:schemas-xmlsoap-org:ws:2005:04:discovery</a:To>
+          </Header>
+          <Body>
+            <d:Probe>
+              <d:Types>dn:NetworkVideoTransmitter</d:Types>
+            </d:Probe>
+          </Body>
+        </Envelope>";
+
+            byte[] probeBytes = Encoding.UTF8.GetBytes(probeMessage);
+
+            // Send probe
+            udpClient.Send(probeBytes, probeBytes.Length, endPoint);
+
+            txtbx_results.AppendText("\r\nProbe sent. Listening for responses...");
+
+            // Listen for responses (timeout after 5 seconds)
+            udpClient.Client.ReceiveTimeout = 5000;
+
+            try
+            {
+                while (true)
+                {
+                    IPEndPoint remoteEP = null;
+                    byte[] responseBytes = udpClient.Receive(ref remoteEP);
+                    string responseXml = Encoding.UTF8.GetString(responseBytes);
+
+                    // txtbx_results.AppendText("\r\nResponse from " + remoteEP.Address);
+                    // txtbx_results.AppendText("\r\n" + responseXml + "\r\n");
+
+                    // Parse XML to extract XAddrs (service address)
+                    XmlDocument doc = new XmlDocument();
+                    doc.LoadXml(responseXml);
+
+                    XmlNamespaceManager ns = new XmlNamespaceManager(doc.NameTable);
+                    ns.AddNamespace("d", "http://schemas.xmlsoap.org/ws/2005/04/discovery");
+                    ns.AddNamespace("a", "http://schemas.xmlsoap.org/ws/2004/08/addressing");
+                    ns.AddNamespace("wsd", "http://schemas.xmlsoap.org/ws/2005/04/discovery");
+                    ns.AddNamespace("soap", "http://www.w3.org/2003/05/soap-envelope");
+
+                    XmlNode xAddrsNode = doc.SelectSingleNode("//wsd:XAddrs", ns);
+                    if (xAddrsNode != null)
+                    {
+                        string input = xAddrsNode.InnerText;
+                        try
+                        {
+                            // Find the index of the first and second '/'
+                            int firstSlash = input.IndexOf('/');
+                            if (firstSlash == -1) throw new Exception("First '/' not found.");
+
+                            int secondSlash = input.IndexOf('/', firstSlash + 1);
+                            if (secondSlash == -1) throw new Exception("Second '/' not found.");
+
+                            // Find the first ':' after the second '/'
+                            int colonIndex = input.IndexOf(':', secondSlash + 1);
+                            if (colonIndex == -1) throw new Exception("':' not found after second '/'.");
+
+                            // Extract the substring between second '/' and ':'
+                            //string result = input.Substring(secondSlash + 1, colonIndex - (secondSlash + 1));
+                            //txtbx_results.AppendText($"\r\nCamera IP Address = {result}");
+
+                            txtbx_camera_ip_address.Text = input.Substring(secondSlash + 1, colonIndex - (secondSlash + 1));
+                        }
+                        catch (Exception ex)
+                        {
+                            txtbx_results.AppendText($"\r\nError: {ex.Message}");
+                        }
+
+
+
+                        // txtbx_results.AppendText("\r\nCamera Service Address = " + xAddrsNode.InnerText);
+                        flag = false;
+                        return;
+                    }
+
+                }
+            }
+            catch (SocketException)
+            {
+                txtbx_results.AppendText("\r\nListening finished (timeout). Please try again.");
+            }
+
+
+
+        }
+
+        private void btn_clear_Click(object sender, EventArgs e)
+        {
+            txtbx_results.Clear();
+        }
+
+        private void btn_close_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private static Timer _timer;
+
+
+        //private void btn_get_image_Click(object sender, EventArgs e)
+        //{
+
+
+
+
+
+
+        //    // Camera credentials
+        //    //private static string cameraIp = "192.168.1.50";   // replace with your camera IP
+        //    //private static string username = "admin";          // replace with your username
+        //    //private static string password = "12345";          // replace with your password
+
+
+        //    // Set up a timer to trigger every 60 seconds
+        //    _timer = new Timer(60 * 1000);
+        //    _timer.Elapsed += GrabSnapshot;
+        //    _timer.AutoReset = true;
+        //    _timer.Enabled = true;
+
+        //    //Console.WriteLine("Press Enter to exit...");
+        //    //Console.ReadLine();
+        //}
+
+        private static void GrabSnapshot(object sender, ElapsedEventArgs e)
+        {
+        }
+
+        private void btn_get_image_Click(object sender, EventArgs e)
+        {
+
+            //// Load a webpage
+            //try
+            //{
+            //    webbsr_image.Navigate("http://192.168.1.113/Snapshot/1/RemoteImageCapture?ImageFormat=2");
+            //}
+            //catch (UriFormatException)
+            //{
+            //    MessageBox.Show("Invalid URL format.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            //}
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show($"Error loading page: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            //}
+
+            string camera_ip_address = txtbx_camera_ip_address.Text;
+            string url = "http://" + camera_ip_address + "/Snapshot/1/RemoteImageCapture?ImageFormat=2";
+            string username = txtbx_username.Text;
+            string password = txtbx_password.Text;
+
+            int counter = 0;
+
+
+
+            while (true)
+            {
+                //string fileName = $"snapshot_{DateTime.Now:ddMMyyyy_HHmmss}_{counter}.jpg";
+
+                try
+                {
+
+                    // Create the request
+                    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                    request.Credentials = new NetworkCredential(username, password);
+
+                    using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+
+                    using (Stream stream = response.GetResponseStream())
+                    {
+                        //Thread.Sleep(200);
+                        //Thread.Sleep(TimeSpan.FromMinutes(0.5));
+                        string fileName = $"snapshot_{DateTime.Now:ddMMyyyy_HHmmss}_{counter}.jpg";
+                        using (FileStream fs = new FileStream(fileName, FileMode.Create))
+                        {
+                            stream.CopyTo(fs);
+                        }
+
+                        txtbx_results.AppendText($"\r\nSaved {fileName}");
+
+                        //picbx_image.Image = Bitmap.FromFile(fileName);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    txtbx_results.AppendText($"\r\nError: {ex.Message}");
+                }
+
+                counter++;
+                // Wait 1 minute
+                Thread.Sleep(TimeSpan.FromMinutes(1));
+                //Thread.Sleep(TimeSpan.FromMinutes(0.5));
+
+
+
+                //if (picbx_image.InvokeRequired)
+                //{
+                //    picbx_image.BeginInvoke((MethodInvoker)delegate ()
+                //    {
+                //        picbx_image.Image = Bitmap.FromFile(fileName);
+                //    });
+                //}
+            }
+
+
+
+
+        }
+
+        private void DrawImage(PictureBox myPictureBox, string myLocation)
+        {
+            // Draw picture to UI but as we have a task watch for cross threading
+
+            if (myPictureBox.InvokeRequired)
+            {
+                myPictureBox.BeginInvoke((MethodInvoker)delegate ()
+                {
+                    myPictureBox.ImageLocation = myLocation;
+                });
+            }
+            else
+            {
+                myPictureBox.ImageLocation = myLocation;
+            }
+        }
+
+        private void btn_ping_Click(object sender, EventArgs e)
+        {
+            string ip_address = txtbx_camera_ip_address.Text;
+            Ping pingSender = new Ping();
+
+            txtbx_results.AppendText("\r\nPinging " + ip_address + " with 32 bytes of data");
+            PingReply reply = pingSender.Send(ip_address);
+            
+            if (reply.Status == IPStatus.Success)
+            {
+                //txtbx_results.AppendText("\r\nResult = Success");
+                //txtbx_results.AppendText("\r\nAddress: " + reply.Address);
+                //txtbx_results.AppendText("\r\nRoundTrip time: " + reply.RoundtripTime);
+                //txtbx_results.AppendText("\r\nTime to live: " + reply.Options.Ttl);
+                //txtbx_results.AppendText("\r\nDon't fragment: " + reply.Options.DontFragment);
+                //txtbx_results.AppendText("\r\nBuffer size: " + reply.Buffer.Length + "\r\n");
+
+               txtbx_results.AppendText("\r\nReply from " + reply.Address + 
+                                         ": bytes=" + reply.Buffer.Length +
+                                         "  time =" + +reply.RoundtripTime +"ms" +
+                                         "  TTL=" + reply.Options.Ttl);
+            }
+            else
+            {
+                txtbx_results.AppendText("\r\nFailed due to "+ reply.Status + "\r\n");
+            }
+        }
+    }
+}
+    
+    
+
+      
