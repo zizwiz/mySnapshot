@@ -5,7 +5,6 @@ using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Reflection;
-using System.Runtime.Serialization;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -13,6 +12,7 @@ using System.Timers;
 using System.Windows.Forms;
 using System.Xml;
 using CenteredMessagebox;
+using mySnapshot.browsing;
 using mySnapshot.utilities;
 using Timer = System.Windows.Forms.Timer;
 
@@ -27,14 +27,18 @@ namespace mySnapshot
             InitializeComponent();
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private async void Form1_Load(object sender, EventArgs e)
         {
             Text += " : v" + Assembly.GetExecutingAssembly().GetName().Version; // put in the version number
+
+            await webview_browser.EnsureCoreWebView2Async();
+
+            setButtonVisibility();
         }
 
         private void btn_findURI_Click(object sender, EventArgs e)
         {
-            
+
 
             // WS-Discovery multicast address and port
             string multicastAddress = "239.255.255.250";
@@ -357,8 +361,8 @@ namespace mySnapshot
                         await Task.Delay(30000, _ct); //waits 30 seconds
 
                         FileInfo info = new FileInfo(fileName); //create the file info object
-                        
-                        rchtxtbx_snapshot_results.AppendText($"\r\nSaved {fileName}" + "\r\nFilesize = " + info.Length +" bytes");
+
+                        rchtxtbx_snapshot_results.AppendText($"\r\nSaved {fileName}" + "\r\nFilesize = " + info.Length + " bytes");
 
                         myPictureBox.Image = Image.FromFile(fileName);
                     }
@@ -374,7 +378,12 @@ namespace mySnapshot
             }
         }
 
-        private void webview_browser_Resize(object sender, EventArgs e)
+        private void btn_browse_Click(object sender, EventArgs e)
+        {
+            browse.NavigateTo("http://" + txtbx_camera_ip_address.Text, webview_browser);
+        }
+        
+        private void Form1_Resize(object sender, EventArgs e)
         {
             myFormatter.Centre(pnl_username_lbl, lbl_username, txtbx_null);
             myFormatter.Centre(pnl_username_txtbx, lbl_null, txtbx_username);
@@ -384,9 +393,33 @@ namespace mySnapshot
             myFormatter.Centre(pnl_camera_ip_address_txtbx, lbl_null, txtbx_camera_ip_address);
         }
 
-        
+        private void tabcntrl_main_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            setButtonVisibility();
+        }
+
+        private void setButtonVisibility()
+        {
+            if (tabcntrl_main.SelectedTab == tab_snapshot)
+            {
+                btn_browse.Visible = false;
+                btn_clear.Visible = btn_ping.Visible = btn_start_capture.Visible = btn_stop_capture.Visible
+                    = btn_get_image.Visible = true;
+            }
+            else if (tabcntrl_main.SelectedTab == tab_web_browser)
+            {
+                btn_browse.Visible = true;
+                btn_clear.Visible = btn_ping.Visible = btn_start_capture.Visible = btn_stop_capture.Visible
+                    = btn_get_image.Visible = false;
+            }
+
+        }
+
+
+
     }
-}
+    }
+
 
 
 

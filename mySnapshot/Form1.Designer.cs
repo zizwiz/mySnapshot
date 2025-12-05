@@ -64,6 +64,7 @@ namespace mySnapshot
             this.pnl_camera_ip_address_lbl = new System.Windows.Forms.Panel();
             this.pnl_password_txtbx = new System.Windows.Forms.Panel();
             this.pnl_camera_ip_address_txtbx = new System.Windows.Forms.Panel();
+            this.btn_browse = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.picbx_image)).BeginInit();
             this.tlp_main.SuspendLayout();
             this.tabcntrl_main.SuspendLayout();
@@ -251,6 +252,7 @@ namespace mySnapshot
             this.tabcntrl_main.SelectedIndex = 0;
             this.tabcntrl_main.Size = new System.Drawing.Size(1134, 515);
             this.tabcntrl_main.TabIndex = 0;
+            this.tabcntrl_main.SelectedIndexChanged += new System.EventHandler(this.tabcntrl_main_SelectedIndexChanged);
             // 
             // tab_snapshot
             // 
@@ -337,7 +339,6 @@ namespace mySnapshot
             this.webview_browser.Size = new System.Drawing.Size(1120, 476);
             this.webview_browser.TabIndex = 0;
             this.webview_browser.ZoomFactor = 1D;
-            this.webview_browser.Resize += new System.EventHandler(this.webview_browser_Resize);
             // 
             // tlp_buttons
             // 
@@ -364,6 +365,7 @@ namespace mySnapshot
             this.tlp_buttons.Controls.Add(this.btn_clear, 4, 0);
             this.tlp_buttons.Controls.Add(this.btn_close, 14, 0);
             this.tlp_buttons.Controls.Add(this.btn_get_image, 12, 0);
+            this.tlp_buttons.Controls.Add(this.btn_browse, 6, 0);
             this.tlp_buttons.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlp_buttons.Location = new System.Drawing.Point(3, 604);
             this.tlp_buttons.Name = "tlp_buttons";
@@ -470,6 +472,17 @@ namespace mySnapshot
             this.pnl_camera_ip_address_txtbx.Size = new System.Drawing.Size(370, 31);
             this.pnl_camera_ip_address_txtbx.TabIndex = 5;
             // 
+            // btn_browse
+            // 
+            this.btn_browse.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btn_browse.Location = new System.Drawing.Point(429, 3);
+            this.btn_browse.Name = "btn_browse";
+            this.btn_browse.Size = new System.Drawing.Size(131, 68);
+            this.btn_browse.TabIndex = 16;
+            this.btn_browse.Text = "Browse";
+            this.btn_browse.UseVisualStyleBackColor = true;
+            this.btn_browse.Click += new System.EventHandler(this.btn_browse_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -480,6 +493,7 @@ namespace mySnapshot
             this.Name = "Form1";
             this.Text = "mySnapshot";
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.Resize += new System.EventHandler(this.Form1_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.picbx_image)).EndInit();
             this.tlp_main.ResumeLayout(false);
             this.tabcntrl_main.ResumeLayout(false);
@@ -544,6 +558,7 @@ namespace mySnapshot
         private Microsoft.Web.WebView2.WinForms.WebView2 webview_browser;
         private System.Windows.Forms.Label lbl_null;
         private System.Windows.Forms.TextBox txtbx_null;
+        private System.Windows.Forms.Button btn_browse;
     }
 }
 
