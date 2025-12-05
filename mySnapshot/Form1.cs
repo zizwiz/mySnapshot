@@ -2,9 +2,10 @@
 using System.Drawing;
 using System.IO;
 using System.Net;
-using System.Net.Http;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
+using System.Reflection;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ using System.Timers;
 using System.Windows.Forms;
 using System.Xml;
 using CenteredMessagebox;
+using mySnapshot.utilities;
 using Timer = System.Windows.Forms.Timer;
 
 namespace mySnapshot
@@ -25,9 +27,14 @@ namespace mySnapshot
             InitializeComponent();
         }
 
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            Text += " : v" + Assembly.GetExecutingAssembly().GetName().Version; // put in the version number
+        }
+
         private void btn_findURI_Click(object sender, EventArgs e)
         {
-            bool flag = true;
+            
 
             // WS-Discovery multicast address and port
             string multicastAddress = "239.255.255.250";
@@ -62,14 +69,16 @@ namespace mySnapshot
             // Send probe
             udpClient.Send(probeBytes, probeBytes.Length, endPoint);
 
-            txtbx_results.AppendText("\r\nProbe sent. Listening for responses...");
+            rchtxtbx_snapshot_results.AppendText("\r\nProbe sent. Listening for responses...");
 
             // Listen for responses (timeout after 5 seconds)
             udpClient.Client.ReceiveTimeout = 5000;
 
             try
             {
-                while (true)
+                bool flag = true;
+
+                while (flag)
                 {
                     IPEndPoint remoteEP = null;
                     byte[] responseBytes = udpClient.Receive(ref remoteEP);
@@ -113,7 +122,7 @@ namespace mySnapshot
                         }
                         catch (Exception ex)
                         {
-                            txtbx_results.AppendText($"\r\nError: {ex.Message}");
+                            rchtxtbx_snapshot_results.AppendText($"\r\nError: {ex.Message}");
                         }
 
 
@@ -127,7 +136,7 @@ namespace mySnapshot
             }
             catch (SocketException)
             {
-                txtbx_results.AppendText("\r\nListening finished (timeout). Please try again.");
+                rchtxtbx_snapshot_results.AppendText("\r\nListening finished (timeout). Please try again.");
             }
 
 
@@ -136,7 +145,7 @@ namespace mySnapshot
 
         private void btn_clear_Click(object sender, EventArgs e)
         {
-            txtbx_results.Clear();
+            rchtxtbx_snapshot_results.Clear();
         }
 
         private void btn_close_Click(object sender, EventArgs e)
@@ -224,14 +233,14 @@ namespace mySnapshot
                             stream.CopyTo(fs);
                         }
 
-                        txtbx_results.AppendText($"\r\nSaved {fileName}");
+                        rchtxtbx_snapshot_results.AppendText($"\r\nSaved {fileName}");
 
                         //picbx_image.Image = Bitmap.FromFile(fileName);
                     }
                 }
                 catch (Exception ex)
                 {
-                    txtbx_results.AppendText($"\r\nError: {ex.Message}");
+                    rchtxtbx_snapshot_results.AppendText($"\r\nError: {ex.Message}");
                 }
 
                 counter++;
@@ -277,7 +286,7 @@ namespace mySnapshot
             string ip_address = txtbx_camera_ip_address.Text;
             Ping pingSender = new Ping();
 
-            txtbx_results.AppendText("\r\nPinging " + ip_address + " with 32 bytes of data");
+            rchtxtbx_snapshot_results.AppendText("\r\nPinging " + ip_address + " with 32 bytes of data");
             PingReply reply = pingSender.Send(ip_address);
 
             if (reply.Status == IPStatus.Success)
@@ -289,14 +298,14 @@ namespace mySnapshot
                 //txtbx_results.AppendText("\r\nDon't fragment: " + reply.Options.DontFragment);
                 //txtbx_results.AppendText("\r\nBuffer size: " + reply.Buffer.Length + "\r\n");
 
-                txtbx_results.AppendText("\r\nReply from " + reply.Address +
-                                          ": bytes=" + reply.Buffer.Length +
-                                          "  time =" + +reply.RoundtripTime + "ms" +
-                                          "  TTL=" + reply.Options.Ttl + "\r\n");
+                rchtxtbx_snapshot_results.AppendText("\r\nReply from " + reply.Address +
+                                                     ": bytes=" + reply.Buffer.Length +
+                                                     "  time =" + +reply.RoundtripTime + "ms" +
+                                                     "  TTL=" + reply.Options.Ttl + "\r\n");
             }
             else
             {
-                txtbx_results.AppendText("\r\nFailed due to " + reply.Status + "\r\n");
+                rchtxtbx_snapshot_results.AppendText("\r\nFailed due to " + reply.Status + "\r\n");
             }
         }
 
@@ -320,7 +329,7 @@ namespace mySnapshot
 
         private async void RunSequence(CancellationToken _ct, PictureBox myPictureBox)
         {
-            int counter = 0;
+            int counter = 1;
             string camera_ip_address = txtbx_camera_ip_address.Text;
             string url = "http://" + camera_ip_address + "/Snapshot/1/RemoteImageCapture?ImageFormat=2";
             string username = txtbx_username.Text;
@@ -349,7 +358,7 @@ namespace mySnapshot
 
                         FileInfo info = new FileInfo(fileName); //create the file info object
                         
-                        txtbx_results.AppendText($"\r\nSaved {fileName}" + "\r\nFilesize = " + info.Length +"bytes");
+                        rchtxtbx_snapshot_results.AppendText($"\r\nSaved {fileName}" + "\r\nFilesize = " + info.Length +" bytes");
 
                         myPictureBox.Image = Image.FromFile(fileName);
                     }
@@ -364,6 +373,18 @@ namespace mySnapshot
 
             }
         }
+
+        private void webview_browser_Resize(object sender, EventArgs e)
+        {
+            myFormatter.Centre(pnl_username_lbl, lbl_username, txtbx_null);
+            myFormatter.Centre(pnl_username_txtbx, lbl_null, txtbx_username);
+            myFormatter.Centre(pnl_password_lbl, lbl_password, txtbx_null);
+            myFormatter.Centre(pnl_password_txtbx, lbl_null, txtbx_password);
+            myFormatter.Centre(pnl_camera_ip_address_lbl, lbl_camera_ip_address, txtbx_null);
+            myFormatter.Centre(pnl_camera_ip_address_txtbx, lbl_null, txtbx_camera_ip_address);
+        }
+
+        
     }
 }
 
