@@ -11,12 +11,15 @@ using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Forms;
 using System.Xml;
+using CenteredMessagebox;
 using Timer = System.Windows.Forms.Timer;
 
 namespace mySnapshot
 {
     public partial class Form1 : Form
     {
+        CancellationTokenSource tokenSource; // Declare the cancellation token
+
         public Form1()
         {
             InitializeComponent();
@@ -276,7 +279,7 @@ namespace mySnapshot
 
             txtbx_results.AppendText("\r\nPinging " + ip_address + " with 32 bytes of data");
             PingReply reply = pingSender.Send(ip_address);
-            
+
             if (reply.Status == IPStatus.Success)
             {
                 //txtbx_results.AppendText("\r\nResult = Success");
@@ -286,19 +289,84 @@ namespace mySnapshot
                 //txtbx_results.AppendText("\r\nDon't fragment: " + reply.Options.DontFragment);
                 //txtbx_results.AppendText("\r\nBuffer size: " + reply.Buffer.Length + "\r\n");
 
-               txtbx_results.AppendText("\r\nReply from " + reply.Address + 
-                                         ": bytes=" + reply.Buffer.Length +
-                                         "  time =" + +reply.RoundtripTime +"ms" +
-                                         "  TTL=" + reply.Options.Ttl + "\r\n");
+                txtbx_results.AppendText("\r\nReply from " + reply.Address +
+                                          ": bytes=" + reply.Buffer.Length +
+                                          "  time =" + +reply.RoundtripTime + "ms" +
+                                          "  TTL=" + reply.Options.Ttl + "\r\n");
             }
             else
             {
-                txtbx_results.AppendText("\r\nFailed due to "+ reply.Status + "\r\n");
+                txtbx_results.AppendText("\r\nFailed due to " + reply.Status + "\r\n");
+            }
+        }
+
+        private void btn_stop_capture_Click(object sender, EventArgs e)
+        {
+            tokenSource.Cancel(); // make the token a cancel token
+        }
+
+        private void btn_start_capture_Click(object sender, EventArgs e)
+        {
+            StartCapture(picbx_image);
+        }
+
+        public void StartCapture(PictureBox myPictureBox)
+        {
+            // WriteUIData("Sequence Started @ " + DateTime.Now, mySequenceStartedLabel);
+
+            tokenSource = new CancellationTokenSource();    //Make a new instance
+            Task.Run(() => RunSequence(tokenSource.Token, myPictureBox)); //Run the task that we need to stop
+        }
+
+        private async void RunSequence(CancellationToken _ct, PictureBox myPictureBox)
+        {
+            int counter = 0;
+            string camera_ip_address = txtbx_camera_ip_address.Text;
+            string url = "http://" + camera_ip_address + "/Snapshot/1/RemoteImageCapture?ImageFormat=2";
+            string username = txtbx_username.Text;
+            string password = txtbx_password.Text;
+
+            while (!_ct.IsCancellationRequested)
+            {
+                GC.Collect(); //clean orphaned memory
+                try
+                {
+                    // Create the request
+                    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                    request.Credentials = new NetworkCredential(username, password);
+
+                    using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+
+                    using (Stream stream = response.GetResponseStream())
+                    {
+                        string fileName = $"snapshot_{DateTime.Now:ddMMyyyy_HHmmss}_{counter++}.jpg";
+                        using (FileStream fs = new FileStream(fileName, FileMode.Create))
+                        {
+                            stream.CopyTo(fs);
+                        }
+
+                        await Task.Delay(30000, _ct); //waits 30 seconds
+
+                        FileInfo info = new FileInfo(fileName); //create the file info object
+                        
+                        txtbx_results.AppendText($"\r\nSaved {fileName}" + "\r\nFilesize = " + info.Length +"bytes");
+
+                        myPictureBox.Image = Image.FromFile(fileName);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MsgBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                }
+
+                await Task.Delay(30000, _ct); //waits 30 seconds 
+
             }
         }
     }
 }
-    
-    
 
-      
+
+
+

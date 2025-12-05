@@ -43,6 +43,8 @@ namespace mySnapshot
             this.txtbx_password = new System.Windows.Forms.TextBox();
             this.txtbx_camera_ip_address = new System.Windows.Forms.TextBox();
             this.btn_ping = new System.Windows.Forms.Button();
+            this.btn_stop_capture = new System.Windows.Forms.Button();
+            this.btn_start_capture = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.picbx_image)).BeginInit();
             this.SuspendLayout();
             // 
@@ -50,7 +52,7 @@ namespace mySnapshot
             // 
             this.btn_findURI.Location = new System.Drawing.Point(12, 632);
             this.btn_findURI.Name = "btn_findURI";
-            this.btn_findURI.Size = new System.Drawing.Size(193, 37);
+            this.btn_findURI.Size = new System.Drawing.Size(136, 37);
             this.btn_findURI.TabIndex = 0;
             this.btn_findURI.Text = "Find URI";
             this.btn_findURI.UseVisualStyleBackColor = true;
@@ -66,9 +68,9 @@ namespace mySnapshot
             // 
             // btn_clear
             // 
-            this.btn_clear.Location = new System.Drawing.Point(369, 632);
+            this.btn_clear.Location = new System.Drawing.Point(295, 632);
             this.btn_clear.Name = "btn_clear";
-            this.btn_clear.Size = new System.Drawing.Size(193, 37);
+            this.btn_clear.Size = new System.Drawing.Size(149, 37);
             this.btn_clear.TabIndex = 2;
             this.btn_clear.Text = "Clear";
             this.btn_clear.UseVisualStyleBackColor = true;
@@ -95,9 +97,9 @@ namespace mySnapshot
             // 
             // btn_get_image
             // 
-            this.btn_get_image.Location = new System.Drawing.Point(616, 632);
+            this.btn_get_image.Location = new System.Drawing.Point(789, 632);
             this.btn_get_image.Name = "btn_get_image";
-            this.btn_get_image.Size = new System.Drawing.Size(193, 37);
+            this.btn_get_image.Size = new System.Drawing.Size(121, 37);
             this.btn_get_image.TabIndex = 5;
             this.btn_get_image.Text = "Get Image";
             this.btn_get_image.UseVisualStyleBackColor = true;
@@ -163,19 +165,41 @@ namespace mySnapshot
             // 
             // btn_ping
             // 
-            this.btn_ping.Location = new System.Drawing.Point(211, 632);
+            this.btn_ping.Location = new System.Drawing.Point(154, 632);
             this.btn_ping.Name = "btn_ping";
-            this.btn_ping.Size = new System.Drawing.Size(152, 37);
+            this.btn_ping.Size = new System.Drawing.Size(135, 37);
             this.btn_ping.TabIndex = 13;
             this.btn_ping.Text = "Ping";
             this.btn_ping.UseVisualStyleBackColor = true;
             this.btn_ping.Click += new System.EventHandler(this.btn_ping_Click);
+            // 
+            // btn_stop_capture
+            // 
+            this.btn_stop_capture.Location = new System.Drawing.Point(478, 632);
+            this.btn_stop_capture.Name = "btn_stop_capture";
+            this.btn_stop_capture.Size = new System.Drawing.Size(121, 37);
+            this.btn_stop_capture.TabIndex = 14;
+            this.btn_stop_capture.Text = "Stop Image";
+            this.btn_stop_capture.UseVisualStyleBackColor = true;
+            this.btn_stop_capture.Click += new System.EventHandler(this.btn_stop_capture_Click);
+            // 
+            // btn_start_capture
+            // 
+            this.btn_start_capture.Location = new System.Drawing.Point(605, 632);
+            this.btn_start_capture.Name = "btn_start_capture";
+            this.btn_start_capture.Size = new System.Drawing.Size(121, 37);
+            this.btn_start_capture.TabIndex = 15;
+            this.btn_start_capture.Text = "Start Capture";
+            this.btn_start_capture.UseVisualStyleBackColor = true;
+            this.btn_start_capture.Click += new System.EventHandler(this.btn_start_capture_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1140, 681);
+            this.Controls.Add(this.btn_start_capture);
+            this.Controls.Add(this.btn_stop_capture);
             this.Controls.Add(this.btn_ping);
             this.Controls.Add(this.txtbx_camera_ip_address);
             this.Controls.Add(this.txtbx_password);
@@ -214,6 +238,8 @@ namespace mySnapshot
         private System.Windows.Forms.TextBox txtbx_password;
         private System.Windows.Forms.TextBox txtbx_camera_ip_address;
         private System.Windows.Forms.Button btn_ping;
+        private System.Windows.Forms.Button btn_stop_capture;
+        private System.Windows.Forms.Button btn_start_capture;
     }
 }
 
