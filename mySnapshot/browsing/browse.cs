@@ -8,7 +8,7 @@ namespace mySnapshot.browsing
     {
         public static void NavigateTo(string URL, WebView2 browser)
         {
-            if (URL.Substring(0, 5) == "https")
+            if (URL.Substring(0, 4) == "http")
             {
                 if (browser != null && browser.CoreWebView2 != null)
                 {

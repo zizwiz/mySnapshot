@@ -123,7 +123,7 @@ namespace mySnapshot
             this.picbx_image.Dock = System.Windows.Forms.DockStyle.Fill;
             this.picbx_image.Location = new System.Drawing.Point(0, 0);
             this.picbx_image.Name = "picbx_image";
-            this.picbx_image.Size = new System.Drawing.Size(552, 470);
+            this.picbx_image.Size = new System.Drawing.Size(775, 470);
             this.picbx_image.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picbx_image.TabIndex = 4;
             this.picbx_image.TabStop = false;
@@ -268,9 +268,9 @@ namespace mySnapshot
             // tpl_snapshot
             // 
             this.tpl_snapshot.ColumnCount = 3;
-            this.tpl_snapshot.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tpl_snapshot.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30F));
             this.tpl_snapshot.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 5F));
-            this.tpl_snapshot.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tpl_snapshot.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 70F));
             this.tpl_snapshot.Controls.Add(this.pnl_snapshot_rchtxtbx, 0, 0);
             this.tpl_snapshot.Controls.Add(this.pnl_snapshot_picbx, 2, 0);
             this.tpl_snapshot.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -287,7 +287,7 @@ namespace mySnapshot
             this.pnl_snapshot_rchtxtbx.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnl_snapshot_rchtxtbx.Location = new System.Drawing.Point(3, 3);
             this.pnl_snapshot_rchtxtbx.Name = "pnl_snapshot_rchtxtbx";
-            this.pnl_snapshot_rchtxtbx.Size = new System.Drawing.Size(551, 470);
+            this.pnl_snapshot_rchtxtbx.Size = new System.Drawing.Size(328, 470);
             this.pnl_snapshot_rchtxtbx.TabIndex = 0;
             // 
             // rchtxtbx_snapshot_results
@@ -295,7 +295,7 @@ namespace mySnapshot
             this.rchtxtbx_snapshot_results.Dock = System.Windows.Forms.DockStyle.Fill;
             this.rchtxtbx_snapshot_results.Location = new System.Drawing.Point(0, 0);
             this.rchtxtbx_snapshot_results.Name = "rchtxtbx_snapshot_results";
-            this.rchtxtbx_snapshot_results.Size = new System.Drawing.Size(551, 470);
+            this.rchtxtbx_snapshot_results.Size = new System.Drawing.Size(328, 470);
             this.rchtxtbx_snapshot_results.TabIndex = 0;
             this.rchtxtbx_snapshot_results.Text = "";
             // 
@@ -303,9 +303,9 @@ namespace mySnapshot
             // 
             this.pnl_snapshot_picbx.Controls.Add(this.picbx_image);
             this.pnl_snapshot_picbx.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnl_snapshot_picbx.Location = new System.Drawing.Point(565, 3);
+            this.pnl_snapshot_picbx.Location = new System.Drawing.Point(342, 3);
             this.pnl_snapshot_picbx.Name = "pnl_snapshot_picbx";
-            this.pnl_snapshot_picbx.Size = new System.Drawing.Size(552, 470);
+            this.pnl_snapshot_picbx.Size = new System.Drawing.Size(775, 470);
             this.pnl_snapshot_picbx.TabIndex = 1;
             // 
             // tab_web_browser

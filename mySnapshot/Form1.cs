@@ -74,6 +74,7 @@ namespace mySnapshot
             udpClient.Send(probeBytes, probeBytes.Length, endPoint);
 
             rchtxtbx_snapshot_results.AppendText("\r\nProbe sent. Listening for responses...");
+            rchtxtbx_snapshot_results.ScrollToCaret();
 
             // Listen for responses (timeout after 5 seconds)
             udpClient.Client.ReceiveTimeout = 5000;
@@ -127,6 +128,7 @@ namespace mySnapshot
                         catch (Exception ex)
                         {
                             rchtxtbx_snapshot_results.AppendText($"\r\nError: {ex.Message}");
+                            rchtxtbx_snapshot_results.ScrollToCaret();
                         }
 
 
@@ -141,6 +143,7 @@ namespace mySnapshot
             catch (SocketException)
             {
                 rchtxtbx_snapshot_results.AppendText("\r\nListening finished (timeout). Please try again.");
+                rchtxtbx_snapshot_results.ScrollToCaret();
             }
 
 
@@ -238,6 +241,7 @@ namespace mySnapshot
                         }
 
                         rchtxtbx_snapshot_results.AppendText($"\r\nSaved {fileName}");
+                        rchtxtbx_snapshot_results.ScrollToCaret();
 
                         //picbx_image.Image = Bitmap.FromFile(fileName);
                     }
@@ -245,6 +249,8 @@ namespace mySnapshot
                 catch (Exception ex)
                 {
                     rchtxtbx_snapshot_results.AppendText($"\r\nError: {ex.Message}");
+                    rchtxtbx_snapshot_results.ScrollToCaret();
+
                 }
 
                 counter++;
@@ -291,6 +297,8 @@ namespace mySnapshot
             Ping pingSender = new Ping();
 
             rchtxtbx_snapshot_results.AppendText("\r\nPinging " + ip_address + " with 32 bytes of data");
+            rchtxtbx_snapshot_results.ScrollToCaret();
+
             PingReply reply = pingSender.Send(ip_address);
 
             if (reply.Status == IPStatus.Success)
@@ -306,10 +314,14 @@ namespace mySnapshot
                                                      ": bytes=" + reply.Buffer.Length +
                                                      "  time =" + +reply.RoundtripTime + "ms" +
                                                      "  TTL=" + reply.Options.Ttl + "\r\n");
+                rchtxtbx_snapshot_results.ScrollToCaret();
+
             }
             else
             {
                 rchtxtbx_snapshot_results.AppendText("\r\nFailed due to " + reply.Status + "\r\n");
+                rchtxtbx_snapshot_results.ScrollToCaret();
+
             }
         }
 
@@ -363,6 +375,7 @@ namespace mySnapshot
                         FileInfo info = new FileInfo(fileName); //create the file info object
 
                         rchtxtbx_snapshot_results.AppendText($"\r\nSaved {fileName}" + "\r\nFilesize = " + info.Length + " bytes");
+                        rchtxtbx_snapshot_results.ScrollToCaret();
 
                         myPictureBox.Image = Image.FromFile(fileName);
                     }
@@ -382,7 +395,7 @@ namespace mySnapshot
         {
             browse.NavigateTo("http://" + txtbx_camera_ip_address.Text, webview_browser);
         }
-        
+
         private void Form1_Resize(object sender, EventArgs e)
         {
             myFormatter.Centre(pnl_username_lbl, lbl_username, txtbx_null);
@@ -418,7 +431,7 @@ namespace mySnapshot
 
 
     }
-    }
+}
 
 
 
