@@ -55,6 +55,7 @@ namespace mySnapshot
             this.pnl_web_browser = new System.Windows.Forms.Panel();
             this.webview_browser = new Microsoft.Web.WebView2.WinForms.WebView2();
             this.tlp_buttons = new System.Windows.Forms.TableLayoutPanel();
+            this.btn_browse = new System.Windows.Forms.Button();
             this.tpl_settings = new System.Windows.Forms.TableLayoutPanel();
             this.pnl_username_lbl = new System.Windows.Forms.Panel();
             this.lbl_null = new System.Windows.Forms.Label();
@@ -64,7 +65,6 @@ namespace mySnapshot
             this.pnl_camera_ip_address_lbl = new System.Windows.Forms.Panel();
             this.pnl_password_txtbx = new System.Windows.Forms.Panel();
             this.pnl_camera_ip_address_txtbx = new System.Windows.Forms.Panel();
-            this.btn_browse = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.picbx_image)).BeginInit();
             this.tlp_main.SuspendLayout();
             this.tabcntrl_main.SuspendLayout();
@@ -92,7 +92,7 @@ namespace mySnapshot
             this.btn_findURI.Name = "btn_findURI";
             this.btn_findURI.Size = new System.Drawing.Size(131, 68);
             this.btn_findURI.TabIndex = 0;
-            this.btn_findURI.Text = "Find URI";
+            this.btn_findURI.Text = "Find IP Address";
             this.btn_findURI.UseVisualStyleBackColor = true;
             this.btn_findURI.Click += new System.EventHandler(this.btn_findURI_Click);
             // 
@@ -144,27 +144,27 @@ namespace mySnapshot
             this.lbl_username.AutoSize = true;
             this.lbl_username.Location = new System.Drawing.Point(133, 5);
             this.lbl_username.Name = "lbl_username";
-            this.lbl_username.Size = new System.Drawing.Size(87, 20);
+            this.lbl_username.Size = new System.Drawing.Size(83, 20);
             this.lbl_username.TabIndex = 7;
-            this.lbl_username.Text = "Username:";
+            this.lbl_username.Text = "Username";
             // 
             // lbl_password
             // 
             this.lbl_password.AutoSize = true;
             this.lbl_password.Location = new System.Drawing.Point(135, 5);
             this.lbl_password.Name = "lbl_password";
-            this.lbl_password.Size = new System.Drawing.Size(82, 20);
+            this.lbl_password.Size = new System.Drawing.Size(78, 20);
             this.lbl_password.TabIndex = 8;
-            this.lbl_password.Text = "Password:";
+            this.lbl_password.Text = "Password";
             // 
             // lbl_camera_ip_address
             // 
             this.lbl_camera_ip_address.AutoSize = true;
             this.lbl_camera_ip_address.Location = new System.Drawing.Point(102, 5);
             this.lbl_camera_ip_address.Name = "lbl_camera_ip_address";
-            this.lbl_camera_ip_address.Size = new System.Drawing.Size(151, 20);
+            this.lbl_camera_ip_address.Size = new System.Drawing.Size(147, 20);
             this.lbl_camera_ip_address.TabIndex = 9;
-            this.lbl_camera_ip_address.Text = "Camera IP Address:";
+            this.lbl_camera_ip_address.Text = "Camera IP Address";
             // 
             // txtbx_username
             // 
@@ -210,7 +210,7 @@ namespace mySnapshot
             this.btn_stop_capture.Name = "btn_stop_capture";
             this.btn_stop_capture.Size = new System.Drawing.Size(131, 68);
             this.btn_stop_capture.TabIndex = 14;
-            this.btn_stop_capture.Text = "Stop Image";
+            this.btn_stop_capture.Text = "Stop Capture";
             this.btn_stop_capture.UseVisualStyleBackColor = true;
             this.btn_stop_capture.Click += new System.EventHandler(this.btn_stop_capture_Click);
             // 
@@ -374,6 +374,17 @@ namespace mySnapshot
             this.tlp_buttons.Size = new System.Drawing.Size(1134, 74);
             this.tlp_buttons.TabIndex = 1;
             // 
+            // btn_browse
+            // 
+            this.btn_browse.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btn_browse.Location = new System.Drawing.Point(429, 3);
+            this.btn_browse.Name = "btn_browse";
+            this.btn_browse.Size = new System.Drawing.Size(131, 68);
+            this.btn_browse.TabIndex = 16;
+            this.btn_browse.Text = "Browse";
+            this.btn_browse.UseVisualStyleBackColor = true;
+            this.btn_browse.Click += new System.EventHandler(this.btn_browse_Click);
+            // 
             // tpl_settings
             // 
             this.tpl_settings.ColumnCount = 5;
@@ -471,17 +482,6 @@ namespace mySnapshot
             this.pnl_camera_ip_address_txtbx.Name = "pnl_camera_ip_address_txtbx";
             this.pnl_camera_ip_address_txtbx.Size = new System.Drawing.Size(370, 31);
             this.pnl_camera_ip_address_txtbx.TabIndex = 5;
-            // 
-            // btn_browse
-            // 
-            this.btn_browse.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btn_browse.Location = new System.Drawing.Point(429, 3);
-            this.btn_browse.Name = "btn_browse";
-            this.btn_browse.Size = new System.Drawing.Size(131, 68);
-            this.btn_browse.TabIndex = 16;
-            this.btn_browse.Text = "Browse";
-            this.btn_browse.UseVisualStyleBackColor = true;
-            this.btn_browse.Click += new System.EventHandler(this.btn_browse_Click);
             // 
             // Form1
             // 
