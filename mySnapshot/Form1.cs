@@ -34,6 +34,13 @@ namespace mySnapshot
             await webview_browser.EnsureCoreWebView2Async();
 
             setButtonVisibility();
+            btn_start_capture.Visible = true;
+            btn_stop_capture.Visible = false;
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            tokenSource.Cancel(); // make the token a cancel token
         }
 
         private void btn_findURI_Click(object sender, EventArgs e)
@@ -327,11 +334,15 @@ namespace mySnapshot
 
         private void btn_stop_capture_Click(object sender, EventArgs e)
         {
+            btn_start_capture.Visible = true;
+            btn_stop_capture.Visible = false;
             tokenSource.Cancel(); // make the token a cancel token
         }
 
         private void btn_start_capture_Click(object sender, EventArgs e)
         {
+            btn_start_capture.Visible = false;
+            btn_stop_capture.Visible = true;
             StartCapture(picbx_image);
         }
 
@@ -374,7 +385,8 @@ namespace mySnapshot
 
                         FileInfo info = new FileInfo(fileName); //create the file info object
 
-                        rchtxtbx_snapshot_results.AppendText($"\r\nSaved {fileName}" + "\r\nFilesize = " + info.Length + " bytes");
+                        rchtxtbx_snapshot_results.AppendText($"\r\nSaved {fileName}" + "\r\nFilesize = " +
+                                                             info.Length + " bytes");
                         rchtxtbx_snapshot_results.ScrollToCaret();
 
                         myPictureBox.Image = Image.FromFile(fileName);
@@ -382,7 +394,7 @@ namespace mySnapshot
                 }
                 catch (Exception ex)
                 {
-                    MsgBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButtons.OK,
+                    MsgBox.Show($"An error occurred: {ex.Message}", "Error_1", MessageBoxButtons.OK,
                         MessageBoxIcon.Error);
                 }
 
@@ -427,7 +439,6 @@ namespace mySnapshot
             }
 
         }
-
 
 
     }
