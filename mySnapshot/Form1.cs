@@ -29,7 +29,7 @@ namespace mySnapshot
 
             setButtonVisibility();
             btn_start_capture.Visible = true;
-            btn_stop_capture.Visible = btn_get_image.Visible = false;
+            btn_stop_capture.Visible =  false;
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
@@ -64,7 +64,7 @@ namespace mySnapshot
             Close();
         }
 
-        private void btn_get_image_Click(object sender, EventArgs e)
+        private void btn_get_image_Click(object sender, EventArgs e) // not used at present
         {
             string camera_ip_address = txtbx_camera_ip_address.Text;
             string url = "http://" + camera_ip_address + "/Snapshot/1/RemoteImageCapture?ImageFormat=2";
@@ -72,8 +72,6 @@ namespace mySnapshot
             string password = txtbx_password.Text;
 
             int counter = 0;
-
-
 
             while (true)
             {
@@ -117,10 +115,6 @@ namespace mySnapshot
                 //    });
                 //}
             }
-
-
-
-
         }
 
         private void btn_stop_capture_Click(object sender, EventArgs e)
@@ -177,7 +171,7 @@ namespace mySnapshot
         {
             if (tabcntrl_main.SelectedTab == tab_snapshot)
             {
-                btn_browse.Visible = btn_get_image.Visible = false;
+                btn_browse.Visible =  false;
                 btn_clear.Visible = btn_ping.Visible = btn_start_capture.Visible = btn_stop_capture.Visible
                      = true;
             }
@@ -185,8 +179,15 @@ namespace mySnapshot
             {
                 btn_browse.Visible = true;
                 btn_clear.Visible = btn_ping.Visible = btn_start_capture.Visible = btn_stop_capture.Visible
-                    = btn_get_image.Visible = false;
+                    =  false;
             }
+        }
+
+        private void btn_sync_time_Click(object sender, EventArgs e)
+        {
+            //Use this to sync the camera time to that of the PC recording the images
+            TimeUtils.SetTime(rchtxtbx_snapshot_results, txtbx_camera_ip_address.Text, txtbx_username.Text,
+                txtbx_password.Text);
         }
     }
 }

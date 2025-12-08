@@ -62,6 +62,7 @@
     <Compile Include="utilities\ConnectionUtils.cs" />
     <Compile Include="utilities\MsgBox.cs" />
     <Compile Include="utilities\myFormatter.cs" />
+    <Compile Include="utilities\TimeUtils.cs" />
     <Compile Include="utilities\Win32.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>

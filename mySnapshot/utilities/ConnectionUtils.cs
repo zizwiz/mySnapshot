@@ -12,26 +12,34 @@ namespace mySnapshot.utilities
     {
         public static void PingCamera(string myIPAddress, RichTextBox myRichTextBox)
         {
-            Ping pingSender = new Ping();
-
-            myRichTextBox.AppendText("\r\nPinging " + myIPAddress + " with 32 bytes of data");
-            myRichTextBox.ScrollToCaret();
-
-            PingReply reply = pingSender.Send(myIPAddress);
-
-            if (reply.Status == IPStatus.Success)
+            try
             {
-                myRichTextBox.AppendText("\r\nReply from " + reply.Address +
-                                         ": bytes=" + reply.Buffer.Length +
-                                         "  time =" + +reply.RoundtripTime + "ms" +
-                                         "  TTL=" + reply.Options.Ttl + "\r\n");
+                Ping pingSender = new Ping();
 
+                myRichTextBox.AppendText("\r\nPinging " + myIPAddress + " with 32 bytes of data");
                 myRichTextBox.ScrollToCaret();
+
+                PingReply reply = pingSender.Send(myIPAddress);
+
+                if (reply.Status == IPStatus.Success)
+                {
+                    myRichTextBox.AppendText("\r\nReply from " + reply.Address +
+                                             ": bytes=" + reply.Buffer.Length +
+                                             "  time =" + +reply.RoundtripTime + "ms" +
+                                             "  TTL=" + reply.Options.Ttl + "\r\n");
+
+                    myRichTextBox.ScrollToCaret();
+                }
+                else
+                {
+                    myRichTextBox.AppendText("\r\nFailed due to " + reply.Status + "\r\n");
+                    myRichTextBox.ScrollToCaret();
+                }
             }
-            else
+            catch (Exception e)
             {
-                myRichTextBox.AppendText("\r\nFailed due to " + reply.Status + "\r\n");
-                myRichTextBox.ScrollToCaret();
+               myRichTextBox.AppendText("\r\n An exception occurred = " + e);
+               myRichTextBox.AppendText("\r\n Check you are connected to the camera and the camera is powered on");
             }
         }
 

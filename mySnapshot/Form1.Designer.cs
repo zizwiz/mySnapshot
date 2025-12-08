@@ -34,7 +34,6 @@ namespace mySnapshot
             this.btn_clear = new System.Windows.Forms.Button();
             this.btn_close = new System.Windows.Forms.Button();
             this.picbx_image = new System.Windows.Forms.PictureBox();
-            this.btn_get_image = new System.Windows.Forms.Button();
             this.lbl_username = new System.Windows.Forms.Label();
             this.lbl_password = new System.Windows.Forms.Label();
             this.lbl_camera_ip_address = new System.Windows.Forms.Label();
@@ -65,6 +64,7 @@ namespace mySnapshot
             this.pnl_camera_ip_address_lbl = new System.Windows.Forms.Panel();
             this.pnl_password_txtbx = new System.Windows.Forms.Panel();
             this.pnl_camera_ip_address_txtbx = new System.Windows.Forms.Panel();
+            this.btn_sync_time = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.picbx_image)).BeginInit();
             this.tlp_main.SuspendLayout();
             this.tabcntrl_main.SuspendLayout();
@@ -127,17 +127,6 @@ namespace mySnapshot
             this.picbx_image.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picbx_image.TabIndex = 4;
             this.picbx_image.TabStop = false;
-            // 
-            // btn_get_image
-            // 
-            this.btn_get_image.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btn_get_image.Location = new System.Drawing.Point(855, 3);
-            this.btn_get_image.Name = "btn_get_image";
-            this.btn_get_image.Size = new System.Drawing.Size(131, 68);
-            this.btn_get_image.TabIndex = 5;
-            this.btn_get_image.Text = "Get Image";
-            this.btn_get_image.UseVisualStyleBackColor = true;
-            this.btn_get_image.Click += new System.EventHandler(this.btn_get_image_Click);
             // 
             // lbl_username
             // 
@@ -358,13 +347,13 @@ namespace mySnapshot
             this.tlp_buttons.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
             this.tlp_buttons.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 5F));
             this.tlp_buttons.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
+            this.tlp_buttons.Controls.Add(this.btn_sync_time, 12, 0);
             this.tlp_buttons.Controls.Add(this.btn_findURI, 0, 0);
             this.tlp_buttons.Controls.Add(this.btn_start_capture, 10, 0);
             this.tlp_buttons.Controls.Add(this.btn_ping, 2, 0);
             this.tlp_buttons.Controls.Add(this.btn_stop_capture, 8, 0);
             this.tlp_buttons.Controls.Add(this.btn_clear, 4, 0);
             this.tlp_buttons.Controls.Add(this.btn_close, 14, 0);
-            this.tlp_buttons.Controls.Add(this.btn_get_image, 12, 0);
             this.tlp_buttons.Controls.Add(this.btn_browse, 6, 0);
             this.tlp_buttons.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlp_buttons.Location = new System.Drawing.Point(3, 604);
@@ -483,6 +472,17 @@ namespace mySnapshot
             this.pnl_camera_ip_address_txtbx.Size = new System.Drawing.Size(370, 31);
             this.pnl_camera_ip_address_txtbx.TabIndex = 5;
             // 
+            // btn_sync_time
+            // 
+            this.btn_sync_time.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btn_sync_time.Location = new System.Drawing.Point(855, 3);
+            this.btn_sync_time.Name = "btn_sync_time";
+            this.btn_sync_time.Size = new System.Drawing.Size(131, 68);
+            this.btn_sync_time.TabIndex = 5;
+            this.btn_sync_time.Text = "Sync Time";
+            this.btn_sync_time.UseVisualStyleBackColor = true;
+            this.btn_sync_time.Click += new System.EventHandler(this.btn_sync_time_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -529,7 +529,6 @@ namespace mySnapshot
         private System.Windows.Forms.Button btn_clear;
         private System.Windows.Forms.Button btn_close;
         private System.Windows.Forms.PictureBox picbx_image;
-        private System.Windows.Forms.Button btn_get_image;
         private System.Windows.Forms.Label lbl_username;
         private System.Windows.Forms.Label lbl_password;
         private System.Windows.Forms.Label lbl_camera_ip_address;
@@ -560,6 +559,7 @@ namespace mySnapshot
         private System.Windows.Forms.Label lbl_null;
         private System.Windows.Forms.TextBox txtbx_null;
         private System.Windows.Forms.Button btn_browse;
+        private System.Windows.Forms.Button btn_sync_time;
     }
 }
 

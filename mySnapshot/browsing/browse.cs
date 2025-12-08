@@ -17,7 +17,7 @@ namespace mySnapshot.browsing
             }
             else
             {
-                MsgBox.Show("The URL needs to start with https://", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MsgBox.Show("The URL needs to start with http://", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

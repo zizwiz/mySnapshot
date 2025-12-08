@@ -16,8 +16,7 @@ namespace mySnapshot.snapshot_utils
             PictureBox myPictureBox, string myIPAddress, string myUsername, string myPassword)
         {
             int counter = 0;
-            string camera_ip_address = myIPAddress;
-            string url = "http://" + camera_ip_address + "/Snapshot/1/RemoteImageCapture?ImageFormat=2";
+            string url = "http://" + myIPAddress + "/Snapshot/1/RemoteImageCapture?ImageFormat=2";
             string username = myUsername;
             string password = myPassword;
 
@@ -37,6 +36,7 @@ namespace mySnapshot.snapshot_utils
                         var bytes = await response.Content.ReadAsByteArrayAsync();
 
                         string fileName = $"snapshot_{DateTime.Now:ddMMyyyy_HHmmss}_{counter++}.jpg";
+                        // await File.WriteAllBytesAsync(fileName, bytes, token); // Use instead of filestream on newer c# versions
 
                         using (FileStream fs = new FileStream(fileName, FileMode.Create, FileAccess.ReadWrite))
                         {
@@ -44,23 +44,27 @@ namespace mySnapshot.snapshot_utils
                             fs.Close();
                         }
 
-                        await Task.Delay(30000, token); //waits 30 seconds
+                        await Task.Delay(30000, token); //waits 30 seconds to write complete file
 
                         FileInfo info = new FileInfo(fileName); //create the file info object
 
                         myRichTextBox.AppendText($"\r\nSaved {fileName}" + "\r\nFilesize = " +
-                                                 info.Length + " bytes");
+                                                 info.Length + " bytes"); //Get file size
                         myRichTextBox.ScrollToCaret();
 
-                        myPictureBox.Image = Image.FromFile(fileName);
+                        myPictureBox.Image = Image.FromFile(fileName); // Show the image we just saved
 
                     }
                     catch (Exception ex)
                     {
-                        myRichTextBox.AppendText($"\r\nError: {ex.Message}");
+                        // FYI:
+                        // On Some IP camera Using POE we seem to lose the web broswer from time to time
+                        // this tells us when we lost it but also goes back round the loop until cancelled
+                        // Supplying separate voltage to the IP camera always brings back image.
+                        myRichTextBox.AppendText($"\r\nError: {ex.Message}"); 
                     }
 
-                    await Task.Delay(30000, token); //waits 30 seconds
+                    await Task.Delay(30000, token); //waits 30 seconds in case we lost the web browser
                 }
             }
         }
