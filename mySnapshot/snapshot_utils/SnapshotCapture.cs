@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using mySnapshot.Properties;
 
 namespace mySnapshot.snapshot_utils
 {
@@ -28,6 +29,8 @@ namespace mySnapshot.snapshot_utils
 
                while (!token.IsCancellationRequested)
                 {
+                    string fileName = $"snapshot_{DateTime.Now:ddMMyyyy_HHmmss}_{counter++}.jpg";
+
                     try
                     {
                         var response = await client.GetAsync(url, token);
@@ -35,7 +38,7 @@ namespace mySnapshot.snapshot_utils
 
                         var bytes = await response.Content.ReadAsByteArrayAsync();
 
-                        string fileName = $"snapshot_{DateTime.Now:ddMMyyyy_HHmmss}_{counter++}.jpg";
+                        
                         // await File.WriteAllBytesAsync(fileName, bytes, token); // Use instead of filestream on newer c# versions
 
                         using (FileStream fs = new FileStream(fileName, FileMode.Create, FileAccess.ReadWrite))
@@ -43,17 +46,6 @@ namespace mySnapshot.snapshot_utils
                             fs.Write(bytes, 0, bytes.Length);
                             fs.Close();
                         }
-
-                        await Task.Delay(30000, token); //waits 30 seconds to write complete file
-
-                        FileInfo info = new FileInfo(fileName); //create the file info object
-
-                        myRichTextBox.AppendText($"\r\nSaved {fileName}" + "\r\nFilesize = " +
-                                                 info.Length + " bytes"); //Get file size
-                        myRichTextBox.ScrollToCaret();
-
-                        myPictureBox.Image = Image.FromFile(fileName); // Show the image we just saved
-
                     }
                     catch (Exception ex)
                     {
@@ -61,8 +53,26 @@ namespace mySnapshot.snapshot_utils
                         // On Some IP camera Using POE we seem to lose the web broswer from time to time
                         // this tells us when we lost it but also goes back round the loop until cancelled
                         // Supplying separate voltage to the IP camera always brings back image.
-                        myRichTextBox.AppendText($"\r\nError: {ex.Message}"); 
+                        myRichTextBox.AppendText($"\r\nError: {ex.Message}");
+
+                        // We are missing an image and we need to put in small image as a marker
+                        // Retrieve the image from project resources
+                        Image img = Resources.missingImage;
+
+                        // Save the image to disk in jpg format
+                        img.Save(fileName, System.Drawing.Imaging.ImageFormat.Jpeg);
                     }
+
+                    await Task.Delay(30000, token); //waits 30 seconds to write complete file
+                    
+                    //Write data to richtextbox
+                    FileInfo info = new FileInfo(fileName); //create the file info object
+                    myRichTextBox.AppendText($"\r\nSaved {fileName}" + "\r\nFilesize = " +
+                                             info.Length + " bytes"); //Get file size
+                    myRichTextBox.ScrollToCaret();
+                    
+                    // Show the image we just saved
+                    myPictureBox.Image = Image.FromFile(fileName); 
 
                     await Task.Delay(30000, token); //waits 30 seconds in case we lost the web browser
                 }
