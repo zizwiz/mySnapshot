@@ -141,8 +141,10 @@ namespace mySnapshot
             if (_runningTask == null || _runningTask.IsCompleted)
             {
                 _cts = new CancellationTokenSource();
-                _runningTask = SnapshotCapture.RunSnapshotCaptureLoop(_cts.Token, rchtxtbx_snapshot_results, picbx_image,
-                txtbx_camera_ip_address.Text, txtbx_username.Text, txtbx_password.Text);
+                _runningTask = SnapshotCapture.RunSnapshotCaptureLoop(_cts.Token, rchtxtbx_snapshot_results,
+                    picbx_image,
+                    txtbx_camera_ip_address.Text, txtbx_username.Text, txtbx_password.Text,
+                    lbl_file_name, lbl_file_size, lbl_retries);
                 rchtxtbx_snapshot_results.AppendText("\r\nCapture started........");
             }
             else
