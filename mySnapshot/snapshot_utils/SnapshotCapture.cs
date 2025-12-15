@@ -17,28 +17,25 @@ namespace mySnapshot.snapshot_utils
             PictureBox myPictureBox, string myIPAddress, string myUsername, string myPassword)
         {
             int counter = 0;
-            string url = "http://" + myIPAddress + "/Snapshot/1/RemoteImageCapture?ImageFormat=2";
-            string username = myUsername;
-            string password = myPassword;
 
             using (var client = new HttpClient())
             {
-                var byteArray = Encoding.ASCII.GetBytes($"{username}:{password}");
                 client.DefaultRequestHeaders.Authorization =
-                    new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
+                    new AuthenticationHeaderValue("Basic",
+                        Convert.ToBase64String(Encoding.ASCII.GetBytes($"{myUsername}:{myPassword}")));
 
-               while (!token.IsCancellationRequested)
+                while (!token.IsCancellationRequested)
                 {
-                    string fileName = $"snapshot_{DateTime.Now:ddMMyyyy_HHmmss}_{counter++}.jpg";
+                    string fileName = $"{DateTime.Now:ddMMyyyy_HHmmss}_{counter++}.jpg";
 
                     try
                     {
-                        var response = await client.GetAsync(url, token);
+                        var response = await client.GetAsync("http://" + myIPAddress + "/Snapshot/1/RemoteImageCapture?ImageFormat=2", token);
                         response.EnsureSuccessStatusCode();
 
                         var bytes = await response.Content.ReadAsByteArrayAsync();
 
-                        
+
                         // await File.WriteAllBytesAsync(fileName, bytes, token); // Use instead of filestream on newer c# versions
 
                         using (FileStream fs = new FileStream(fileName, FileMode.Create, FileAccess.ReadWrite))
@@ -50,7 +47,7 @@ namespace mySnapshot.snapshot_utils
                     catch (Exception ex)
                     {
                         // FYI:
-                        // On Some IP camera Using POE we seem to lose the web broswer from time to time
+                        // On Some IP camera Using POE we seem to lose the web browser from time to time
                         // this tells us when we lost it but also goes back round the loop until cancelled
                         // Supplying separate voltage to the IP camera always brings back image.
                         myRichTextBox.AppendText($"\r\nError: {ex.Message}");
@@ -64,15 +61,15 @@ namespace mySnapshot.snapshot_utils
                     }
 
                     await Task.Delay(30000, token); //waits 30 seconds to write complete file
-                    
+
                     //Write data to richtextbox
                     FileInfo info = new FileInfo(fileName); //create the file info object
                     myRichTextBox.AppendText($"\r\nSaved {fileName}" + "\r\nFilesize = " +
                                              info.Length + " bytes"); //Get file size
                     myRichTextBox.ScrollToCaret();
-                    
+
                     // Show the image we just saved
-                    myPictureBox.Image = Image.FromFile(fileName); 
+                    myPictureBox.Image = Image.FromFile(fileName);
 
                     await Task.Delay(30000, token); //waits 30 seconds in case we lost the web browser
                 }
