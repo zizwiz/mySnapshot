@@ -16,11 +16,10 @@ namespace mySnapshot.snapshot_utils
     {
         public static async Task RunSnapshotCaptureLoop(CancellationToken token, RichTextBox myRichTextBox,
             PictureBox myPictureBox, string myIPAddress, string myUsername, string myPassword,
-            Label myFilename_label, Label myFilesize_label, Label myRetries_label)
+            Label myFilename_label, Label myFilesize_label, Label myRetries_label, Label myPath)
         {
             int counter = 0;
             int retry_times = 0;
-            bool retry = true;
 
             using (var client = new HttpClient())
             {
@@ -30,9 +29,10 @@ namespace mySnapshot.snapshot_utils
 
                 while (!token.IsCancellationRequested)
                 {
-                    string fileName = $"{DateTime.Now:ddMMyyyy_HHmmss}_{counter++}.jpg";
-                    
-                    while (retry)
+                    string fileName = Path.Combine(myPath.Text, $"{DateTime.Now:ddMMyyyy_HHmmss}_{counter++}.jpg");
+                    bool retry = true;
+
+                    while (retry) // webserver was unavailable so we need to retry 
                     {
                         try
                         {
@@ -59,24 +59,26 @@ namespace mySnapshot.snapshot_utils
                             // this tells us when we lost it but also goes back round the loop until cancelled
                             // Supplying separate voltage to the IP camera always brings back image.
                             myRichTextBox.AppendText($"\r\nError: {ex.Message}");
-                            myRichTextBox.AppendText($"\rRetry : {retry_times++}");
-
-                            // We are missing an image and we need to put in small image as a marker
-                            // Retrieve the image from project resources
-                            //Image img = Resources.missingImage;
-
-                            // Save the image to disk in jpg format
-                            // img.Save(fileName, System.Drawing.Imaging.ImageFormat.Jpeg);
+                            myRichTextBox.AppendText($"\rRetry : {retry_times++}"); // inc retries
                         }
                         await Task.Delay(500, token); //waits 0.5 seconds and then try again
+                        
+                        //We retried for 30 seconds (60 times) so we mark this 
+                        if (retry_times > 60)
+                        {
+                            // We are missing an image and we need to put in small image as a marker
+                            // Retrieve the image from project resources
+                            Image img = Resources.missingImage;
+
+                            // Save the image to disk in jpg format
+                            img.Save(fileName, System.Drawing.Imaging.ImageFormat.Jpeg);
+                            retry_times = 60; // set ceiling of retry times to 30 seconds
+                            retry = false; //stop trying
+                        }
                     }
 
-                    if (retry_times > 60) retry_times = 60; // set ceiling of retry times to 30 seconds
-
-                   await Task.Delay(30000 - (retry_times*500), token); //waits 30 seconds minus any retry time
+                    await Task.Delay(30000 - (retry_times * 500), token); //waits 30 seconds minus any retry time
                     
-                    
-                   
                     //Write data to richtextbox
                     FileInfo info = new FileInfo(fileName); //create the file info object
                     myRichTextBox.AppendText($"\r\nSaved {fileName}" + "\r\nFilesize = " +
@@ -86,43 +88,49 @@ namespace mySnapshot.snapshot_utils
                     // Show the image we just saved
                     myPictureBox.Image = Image.FromFile(fileName);
 
-                    //write the data to a csv file
-                    try
-                    {
-                        // Prepare CSV file path (will be created in the same folder as the executable)
-                        string csvFilePath = Path.Combine(Directory.GetCurrentDirectory(), "output.csv");
-
-                       
-                        // Check if file exists to decide whether to write header
-                        bool writeHeader = !File.Exists(csvFilePath);
-
-                        using (StreamWriter writer = new StreamWriter(csvFilePath, append: true))
-                        {
-                            if (writeHeader)
-                            {
-                                writer.WriteLine("Date,Time,FileName,FileSize,RetryTimes");
-                            }
-
-                            // Write CSV row
-                            writer.WriteLine($"{DateTime.Now.ToString("ddMMyyyy", CultureInfo.InvariantCulture)}," +
-                                             $"{DateTime.Now.ToString("HHmmss", CultureInfo.InvariantCulture)}," +
-                                             $"{fileName},{info.Length},{retry_times}");
-                        }
-
-                        myFilename_label.Text = fileName;
-                        myFilesize_label.Text = info.Length.ToString();
-                        myRetries_label.Text = retry_times.ToString();
-
-                    }
-                    catch (Exception ex)
-                    {
-                        myRichTextBox.AppendText($"\r\nError: {ex.Message}"); //why did we get error
-                        myRichTextBox.ScrollToCaret();
-                    }
+                    WriteToFile(fileName, info, retry_times, myRichTextBox, myFilename_label, myFilesize_label, myRetries_label);
 
                     retry_times = 0; //reset to 0
                     await Task.Delay(30000, token); //waits 30 seconds to make sure we have written everything
                 }
+            }
+        }
+
+        private static void WriteToFile(string myFileName, FileInfo myFileInfo, int myRetryTimes, RichTextBox myRichTextBox,
+            Label myFilename_label, Label myFilesize_label, Label myRetries_label)
+        {
+            //write the data to a csv file
+            try
+            {
+                // Prepare CSV file path (will be created in the same folder as the executable)
+                string csvFilePath = Path.Combine(Directory.GetCurrentDirectory(), "output.csv");
+
+
+                // Check if file exists to decide whether to write header
+                bool writeHeader = !File.Exists(csvFilePath);
+
+                using (StreamWriter writer = new StreamWriter(csvFilePath, append: true))
+                {
+                    if (writeHeader)
+                    {
+                        writer.WriteLine("Date,Time,FileName,FileSize,RetryTimes");
+                    }
+
+                    // Write CSV row
+                    writer.WriteLine($"{DateTime.Now.ToString("ddMMyyyy", CultureInfo.InvariantCulture)}," +
+                                     $"{DateTime.Now.ToString("HHmmss", CultureInfo.InvariantCulture)}," +
+                                     $"{myFileName},{myFileInfo.Length},{myRetryTimes}");
+                }
+
+                myFilename_label.Text = myFileName;
+                myFilesize_label.Text = myFileInfo.Length.ToString();
+                myRetries_label.Text = myRetryTimes.ToString();
+
+            }
+            catch (Exception ex)
+            {
+                myRichTextBox.AppendText($"\r\nError: {ex.Message}"); //why did we get error
+                myRichTextBox.ScrollToCaret();
             }
         }
 

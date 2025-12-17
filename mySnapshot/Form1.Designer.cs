@@ -73,6 +73,8 @@ namespace mySnapshot
             this.lbl_file_name = new System.Windows.Forms.Label();
             this.lbl_file_size = new System.Windows.Forms.Label();
             this.lbl_retries = new System.Windows.Forms.Label();
+            this.pnl_save_folder = new System.Windows.Forms.Panel();
+            this.lbl_save_folder = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.picbx_image)).BeginInit();
             this.tlp_main.SuspendLayout();
             this.tabcntrl_main.SuspendLayout();
@@ -96,6 +98,7 @@ namespace mySnapshot
             this.pnl_filename.SuspendLayout();
             this.pnl_filesize.SuspendLayout();
             this.pnl_retries.SuspendLayout();
+            this.pnl_save_folder.SuspendLayout();
             this.SuspendLayout();
             // 
             // btn_findURI
@@ -511,15 +514,18 @@ namespace mySnapshot
             // 
             // tlp_file_info
             // 
-            this.tlp_file_info.ColumnCount = 5;
-            this.tlp_file_info.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tlp_file_info.ColumnCount = 7;
+            this.tlp_file_info.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tlp_file_info.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 5F));
-            this.tlp_file_info.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tlp_file_info.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tlp_file_info.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 5F));
-            this.tlp_file_info.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tlp_file_info.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.tlp_file_info.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 5F));
+            this.tlp_file_info.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tlp_file_info.Controls.Add(this.pnl_filename, 0, 0);
             this.tlp_file_info.Controls.Add(this.pnl_filesize, 2, 0);
             this.tlp_file_info.Controls.Add(this.pnl_retries, 4, 0);
+            this.tlp_file_info.Controls.Add(this.pnl_save_folder, 6, 0);
             this.tlp_file_info.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlp_file_info.Location = new System.Drawing.Point(0, 0);
             this.tlp_file_info.Name = "tlp_file_info";
@@ -534,25 +540,25 @@ namespace mySnapshot
             this.pnl_filename.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnl_filename.Location = new System.Drawing.Point(3, 3);
             this.pnl_filename.Name = "pnl_filename";
-            this.pnl_filename.Size = new System.Drawing.Size(361, 28);
+            this.pnl_filename.Size = new System.Drawing.Size(268, 28);
             this.pnl_filename.TabIndex = 0;
             // 
             // pnl_filesize
             // 
             this.pnl_filesize.Controls.Add(this.lbl_file_size);
             this.pnl_filesize.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnl_filesize.Location = new System.Drawing.Point(375, 3);
+            this.pnl_filesize.Location = new System.Drawing.Point(282, 3);
             this.pnl_filesize.Name = "pnl_filesize";
-            this.pnl_filesize.Size = new System.Drawing.Size(361, 28);
+            this.pnl_filesize.Size = new System.Drawing.Size(268, 28);
             this.pnl_filesize.TabIndex = 1;
             // 
             // pnl_retries
             // 
             this.pnl_retries.Controls.Add(this.lbl_retries);
             this.pnl_retries.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnl_retries.Location = new System.Drawing.Point(747, 3);
+            this.pnl_retries.Location = new System.Drawing.Point(561, 3);
             this.pnl_retries.Name = "pnl_retries";
-            this.pnl_retries.Size = new System.Drawing.Size(364, 28);
+            this.pnl_retries.Size = new System.Drawing.Size(268, 28);
             this.pnl_retries.TabIndex = 2;
             // 
             // lbl_file_name
@@ -581,6 +587,24 @@ namespace mySnapshot
             this.lbl_retries.Size = new System.Drawing.Size(60, 20);
             this.lbl_retries.TabIndex = 0;
             this.lbl_retries.Text = "Retries";
+            // 
+            // pnl_save_folder
+            // 
+            this.pnl_save_folder.Controls.Add(this.lbl_save_folder);
+            this.pnl_save_folder.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnl_save_folder.Location = new System.Drawing.Point(840, 3);
+            this.pnl_save_folder.Name = "pnl_save_folder";
+            this.pnl_save_folder.Size = new System.Drawing.Size(271, 28);
+            this.pnl_save_folder.TabIndex = 3;
+            // 
+            // lbl_save_folder
+            // 
+            this.lbl_save_folder.AutoSize = true;
+            this.lbl_save_folder.Location = new System.Drawing.Point(3, 4);
+            this.lbl_save_folder.Name = "lbl_save_folder";
+            this.lbl_save_folder.Size = new System.Drawing.Size(94, 20);
+            this.lbl_save_folder.TabIndex = 0;
+            this.lbl_save_folder.Text = "Save Folder";
             // 
             // Form1
             // 
@@ -626,6 +650,8 @@ namespace mySnapshot
             this.pnl_filesize.PerformLayout();
             this.pnl_retries.ResumeLayout(false);
             this.pnl_retries.PerformLayout();
+            this.pnl_save_folder.ResumeLayout(false);
+            this.pnl_save_folder.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -675,6 +701,8 @@ namespace mySnapshot
         private System.Windows.Forms.Label lbl_file_size;
         private System.Windows.Forms.Panel pnl_retries;
         private System.Windows.Forms.Label lbl_retries;
+        private System.Windows.Forms.Panel pnl_save_folder;
+        private System.Windows.Forms.Label lbl_save_folder;
     }
 }
 

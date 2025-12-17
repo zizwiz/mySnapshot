@@ -15,6 +15,10 @@ namespace mySnapshot
     {
         private static CancellationTokenSource _cts;
         private static Task _runningTask;
+        private static Thread dateWatcherThread;
+
+        // Base folder where images will be stored in date folders
+        private static readonly string BaseFolder = @"C:\timelapse";
 
         public Form1()
         {
@@ -30,10 +34,34 @@ namespace mySnapshot
             setButtonVisibility();
             btn_start_capture.Visible = true;
             btn_stop_capture.Visible =  false;
+
+            // TimeLapse Folder management - Ensure base folder exists
+            try
+            {
+                Directory.CreateDirectory(BaseFolder);
+            }
+            catch (Exception ex)
+            {
+                rchtxtbx_snapshot_results.AppendText($"Error creating base folder: {ex.Message}");
+                return;
+            }
+
+            // Create and start the background thread
+            //Thread dateWatcherThread = new Thread(DateWatcher(rchtxtbx_snapshot_results, lbl_save_folder))
+            //{
+            //    IsBackground = true // Stops when main program exits
+            //};
+            //dateWatcherThread.Start();
+
+            dateWatcherThread = new Thread(() => DateWatcher(rchtxtbx_snapshot_results, lbl_save_folder, BaseFolder));
+            dateWatcherThread.Start();
+
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
+            dateWatcherThread.Abort();
+
             if (_cts != null)
             {
                 _cts.Cancel(); // make the token a cancel token
@@ -144,7 +172,7 @@ namespace mySnapshot
                 _runningTask = SnapshotCapture.RunSnapshotCaptureLoop(_cts.Token, rchtxtbx_snapshot_results,
                     picbx_image,
                     txtbx_camera_ip_address.Text, txtbx_username.Text, txtbx_password.Text,
-                    lbl_file_name, lbl_file_size, lbl_retries);
+                    lbl_file_name, lbl_file_size, lbl_retries, lbl_save_folder);
                 rchtxtbx_snapshot_results.AppendText("\r\nCapture started........");
             }
             else
