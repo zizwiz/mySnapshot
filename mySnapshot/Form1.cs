@@ -15,8 +15,7 @@ namespace mySnapshot
     {
         private static CancellationTokenSource _cts;
         private static Task _runningTask;
-        private static Thread dateWatcherThread;
-
+       
         // Base folder where images will be stored in date folders
         private static readonly string BaseFolder = @"C:\timelapse";
 
@@ -33,35 +32,24 @@ namespace mySnapshot
 
             setButtonVisibility();
             btn_start_capture.Visible = true;
-            btn_stop_capture.Visible =  false;
+            btn_stop_capture.Visible = false;
 
-            // TimeLapse Folder management - Ensure base folder exists
+            lbl_unique_number.Text = "0";
+
+            // TimeLapse Folder management - Ensure today's folder exists
             try
             {
-                Directory.CreateDirectory(BaseFolder);
+                //Create the folder if it does not exist
+                FolderUtils.CreateDateFolder(DateTime.Now, rchtxtbx_snapshot_results, lbl_save_folder, BaseFolder);
             }
             catch (Exception ex)
             {
                 rchtxtbx_snapshot_results.AppendText($"Error creating base folder: {ex.Message}");
-                return;
             }
-
-            // Create and start the background thread
-            //Thread dateWatcherThread = new Thread(DateWatcher(rchtxtbx_snapshot_results, lbl_save_folder))
-            //{
-            //    IsBackground = true // Stops when main program exits
-            //};
-            //dateWatcherThread.Start();
-
-            dateWatcherThread = new Thread(() => DateWatcher(rchtxtbx_snapshot_results, lbl_save_folder, BaseFolder));
-            dateWatcherThread.Start();
-
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            dateWatcherThread.Abort();
-
             if (_cts != null)
             {
                 _cts.Cancel(); // make the token a cancel token
@@ -134,7 +122,7 @@ namespace mySnapshot
                 counter++;
                 // Wait 1 minute
                 Thread.Sleep(TimeSpan.FromMinutes(1));
-                
+
                 //if (picbx_image.InvokeRequired)
                 //{
                 //    picbx_image.BeginInvoke((MethodInvoker)delegate ()
@@ -149,7 +137,7 @@ namespace mySnapshot
         {
             btn_start_capture.Visible = true;
             btn_stop_capture.Visible = false;
-            
+
             if (_cts != null)
             {
                 _cts.Cancel();
@@ -160,19 +148,20 @@ namespace mySnapshot
                 rchtxtbx_snapshot_results.AppendText("\r\nNot running......");
             }
         }
-        
+
         private void btn_start_capture_Click(object sender, EventArgs e)
         {
             btn_start_capture.Visible = false;
             btn_stop_capture.Visible = true;
-            
+
             if (_runningTask == null || _runningTask.IsCompleted)
             {
                 _cts = new CancellationTokenSource();
                 _runningTask = SnapshotCapture.RunSnapshotCaptureLoop(_cts.Token, rchtxtbx_snapshot_results,
                     picbx_image,
                     txtbx_camera_ip_address.Text, txtbx_username.Text, txtbx_password.Text,
-                    lbl_file_name, lbl_file_size, lbl_retries, lbl_save_folder);
+                    lbl_file_name, lbl_file_size, lbl_retries, lbl_save_folder,
+                    lbl_unique_number, BaseFolder);
                 rchtxtbx_snapshot_results.AppendText("\r\nCapture started........");
             }
             else
@@ -181,7 +170,7 @@ namespace mySnapshot
             }
         }
 
-       
+
         private void Form1_Resize(object sender, EventArgs e)
         {
             myFormatter.Centre(pnl_username_lbl, lbl_username, txtbx_null);
@@ -201,7 +190,7 @@ namespace mySnapshot
         {
             if (tabcntrl_main.SelectedTab == tab_snapshot)
             {
-                btn_browse.Visible =  false;
+                btn_browse.Visible = false;
                 btn_clear.Visible = btn_ping.Visible = btn_start_capture.Visible = btn_stop_capture.Visible
                      = true;
             }
@@ -209,14 +198,14 @@ namespace mySnapshot
             {
                 btn_browse.Visible = true;
                 btn_clear.Visible = btn_ping.Visible = btn_start_capture.Visible = btn_stop_capture.Visible
-                    =  false;
+                    = false;
             }
         }
 
-        private void btn_sync_time_Click(object sender, EventArgs e)
+        private async void btn_sync_time_Click(object sender, EventArgs e)
         {
             //Use this to sync the camera time to that of the PC recording the images
-            TimeUtils.SetTime(rchtxtbx_snapshot_results, txtbx_camera_ip_address.Text, txtbx_username.Text,
+            await TimeUtils.SetTime(rchtxtbx_snapshot_results, txtbx_camera_ip_address.Text, txtbx_username.Text,
                 txtbx_password.Text);
         }
     }

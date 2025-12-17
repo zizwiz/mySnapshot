@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using mySnapshot.Properties;
+using mySnapshot.utilities;
 
 namespace mySnapshot.snapshot_utils
 {
@@ -16,10 +17,13 @@ namespace mySnapshot.snapshot_utils
     {
         public static async Task RunSnapshotCaptureLoop(CancellationToken token, RichTextBox myRichTextBox,
             PictureBox myPictureBox, string myIPAddress, string myUsername, string myPassword,
-            Label myFilename_label, Label myFilesize_label, Label myRetries_label, Label myPath)
+            Label myFilename_label, Label myFilesize_label, Label myRetries_label, Label myPathLabel, Label myUniqueNumber,
+            string myBaseFolder)
         {
-            int counter = 0;
+            int counter;
             int retry_times = 0;
+            // Store the current date (only the date part, no time)
+            DateTime currentDate = DateTime.Now.Date;
 
             using (var client = new HttpClient())
             {
@@ -29,7 +33,22 @@ namespace mySnapshot.snapshot_utils
 
                 while (!token.IsCancellationRequested)
                 {
-                    string fileName = Path.Combine(myPath.Text, $"{DateTime.Now:ddMMyyyy_HHmmss}_{counter++}.jpg");
+                    counter = int.Parse(myUniqueNumber.Text);
+                    string fileName = Path.Combine(myPathLabel.Text, $"{DateTime.Now:ddMMyyyy_HHmmss}_{counter++}.jpg");
+                    myUniqueNumber.Text = counter.ToString();
+
+                    // Get today's date (ignoring time)
+                    DateTime today = DateTime.Now.Date;
+
+                    // Check if the date has changed to a new day
+                    if (today > currentDate)
+                    {
+                        myUniqueNumber.Text = "0"; //reset the counter
+                        myRichTextBox.Clear();     //Clear the Richtextbox of data
+                        currentDate = today;
+                        FolderUtils.CreateDateFolder(DateTime.Now, myRichTextBox, myPathLabel, myBaseFolder);
+                    }
+
                     bool retry = true;
 
                     while (retry) // webserver was unavailable so we need to retry 
@@ -62,7 +81,7 @@ namespace mySnapshot.snapshot_utils
                             myRichTextBox.AppendText($"\rRetry : {retry_times++}"); // inc retries
                         }
                         await Task.Delay(500, token); //waits 0.5 seconds and then try again
-                        
+
                         //We retried for 30 seconds (60 times) so we mark this 
                         if (retry_times > 60)
                         {
@@ -78,7 +97,7 @@ namespace mySnapshot.snapshot_utils
                     }
 
                     await Task.Delay(30000 - (retry_times * 500), token); //waits 30 seconds minus any retry time
-                    
+
                     //Write data to richtextbox
                     FileInfo info = new FileInfo(fileName); //create the file info object
                     myRichTextBox.AppendText($"\r\nSaved {fileName}" + "\r\nFilesize = " +
@@ -88,7 +107,7 @@ namespace mySnapshot.snapshot_utils
                     // Show the image we just saved
                     myPictureBox.Image = Image.FromFile(fileName);
 
-                    WriteToFile(fileName, info, retry_times, myRichTextBox, myFilename_label, myFilesize_label, myRetries_label);
+                    WriteToFile(fileName, myPathLabel, info, retry_times, myRichTextBox, myFilename_label, myFilesize_label, myRetries_label);
 
                     retry_times = 0; //reset to 0
                     await Task.Delay(30000, token); //waits 30 seconds to make sure we have written everything
@@ -96,14 +115,14 @@ namespace mySnapshot.snapshot_utils
             }
         }
 
-        private static void WriteToFile(string myFileName, FileInfo myFileInfo, int myRetryTimes, RichTextBox myRichTextBox,
+        private static void WriteToFile(string myFileName, Label myPathLabel, FileInfo myFileInfo, int myRetryTimes, RichTextBox myRichTextBox,
             Label myFilename_label, Label myFilesize_label, Label myRetries_label)
         {
             //write the data to a csv file
             try
             {
                 // Prepare CSV file path (will be created in the same folder as the executable)
-                string csvFilePath = Path.Combine(Directory.GetCurrentDirectory(), "output.csv");
+                string csvFilePath = Path.Combine(myPathLabel.Text, "output.csv");
 
 
                 // Check if file exists to decide whether to write header
@@ -133,6 +152,5 @@ namespace mySnapshot.snapshot_utils
                 myRichTextBox.ScrollToCaret();
             }
         }
-
     }
 }
