@@ -20,7 +20,7 @@ namespace mySnapshot.snapshot_utils
             Label myFilename_label, Label myFilesize_label, Label myRetries_label, Label myPathLabel, TextBox myUniqueNumber,
             string myBaseFolder)
         {
-            int counter;
+            
             int retry_times = 0;
             // Store the current date (only the date part, no time)
             DateTime currentDate = DateTime.Now.Date;
@@ -33,7 +33,7 @@ namespace mySnapshot.snapshot_utils
 
                 while (!token.IsCancellationRequested)
                 {
-                    counter = int.Parse(myUniqueNumber.Text);
+                    int counter = int.Parse(myUniqueNumber.Text);
 
                     // Get today's date (ignoring time)
                     DateTime today = DateTime.Now.Date;
@@ -106,6 +106,13 @@ namespace mySnapshot.snapshot_utils
                     myRichTextBox.AppendText($"\r\nSaved {fileName}" + "\r\nFilesize = " +
                                              info.Length + " bytes"); //Get file size
                     myRichTextBox.ScrollToCaret();
+
+                    // Safely dispose and clear the image before we update with new image
+                    if (myPictureBox.Image != null)
+                    {
+                        myPictureBox.Image.Dispose();
+                        myPictureBox.Image = null;
+                    }
 
                     // Show the image we just saved
                     myPictureBox.Image = Image.FromFile(fileName);

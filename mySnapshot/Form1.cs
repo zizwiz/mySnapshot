@@ -34,7 +34,7 @@ namespace mySnapshot
             btn_start_capture.Visible = true;
             btn_stop_capture.Visible = false;
 
-            txtbx_unique_number.Text = "0";
+            if (txtbx_unique_number.Text == "") txtbx_unique_number.Text = "0"; //set to zero if empty else leave alone
 
             // TimeLapse Folder management - Ensure today's folder exists
             try
