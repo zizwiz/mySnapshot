@@ -50,6 +50,17 @@ namespace mySnapshot
             this.pnl_snapshot_rchtxtbx = new System.Windows.Forms.Panel();
             this.rchtxtbx_snapshot_results = new System.Windows.Forms.RichTextBox();
             this.pnl_snapshot_picbx = new System.Windows.Forms.Panel();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.tlp_file_info = new System.Windows.Forms.TableLayoutPanel();
+            this.pnl_filename = new System.Windows.Forms.Panel();
+            this.lbl_file_name = new System.Windows.Forms.Label();
+            this.pnl_filesize = new System.Windows.Forms.Panel();
+            this.lbl_file_size = new System.Windows.Forms.Label();
+            this.pnl_retries = new System.Windows.Forms.Panel();
+            this.lbl_retries = new System.Windows.Forms.Label();
+            this.pnl_save_folder = new System.Windows.Forms.Panel();
+            this.lbl_save_folder = new System.Windows.Forms.Label();
+            this.pnl_unique_num = new System.Windows.Forms.Panel();
             this.tab_web_browser = new System.Windows.Forms.TabPage();
             this.pnl_web_browser = new System.Windows.Forms.Panel();
             this.webview_browser = new Microsoft.Web.WebView2.WinForms.WebView2();
@@ -65,18 +76,7 @@ namespace mySnapshot
             this.pnl_camera_ip_address_lbl = new System.Windows.Forms.Panel();
             this.pnl_password_txtbx = new System.Windows.Forms.Panel();
             this.pnl_camera_ip_address_txtbx = new System.Windows.Forms.Panel();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.tlp_file_info = new System.Windows.Forms.TableLayoutPanel();
-            this.pnl_filename = new System.Windows.Forms.Panel();
-            this.pnl_filesize = new System.Windows.Forms.Panel();
-            this.pnl_retries = new System.Windows.Forms.Panel();
-            this.lbl_file_name = new System.Windows.Forms.Label();
-            this.lbl_file_size = new System.Windows.Forms.Label();
-            this.lbl_retries = new System.Windows.Forms.Label();
-            this.pnl_save_folder = new System.Windows.Forms.Panel();
-            this.lbl_save_folder = new System.Windows.Forms.Label();
-            this.pnl_unique_num = new System.Windows.Forms.Panel();
-            this.lbl_unique_number = new System.Windows.Forms.Label();
+            this.txtbx_unique_number = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.picbx_image)).BeginInit();
             this.tlp_main.SuspendLayout();
             this.tabcntrl_main.SuspendLayout();
@@ -84,6 +84,13 @@ namespace mySnapshot
             this.tpl_snapshot.SuspendLayout();
             this.pnl_snapshot_rchtxtbx.SuspendLayout();
             this.pnl_snapshot_picbx.SuspendLayout();
+            this.panel1.SuspendLayout();
+            this.tlp_file_info.SuspendLayout();
+            this.pnl_filename.SuspendLayout();
+            this.pnl_filesize.SuspendLayout();
+            this.pnl_retries.SuspendLayout();
+            this.pnl_save_folder.SuspendLayout();
+            this.pnl_unique_num.SuspendLayout();
             this.tab_web_browser.SuspendLayout();
             this.pnl_web_browser.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.webview_browser)).BeginInit();
@@ -95,13 +102,6 @@ namespace mySnapshot
             this.pnl_camera_ip_address_lbl.SuspendLayout();
             this.pnl_password_txtbx.SuspendLayout();
             this.pnl_camera_ip_address_txtbx.SuspendLayout();
-            this.panel1.SuspendLayout();
-            this.tlp_file_info.SuspendLayout();
-            this.pnl_filename.SuspendLayout();
-            this.pnl_filesize.SuspendLayout();
-            this.pnl_retries.SuspendLayout();
-            this.pnl_save_folder.SuspendLayout();
-            this.pnl_unique_num.SuspendLayout();
             this.SuspendLayout();
             // 
             // btn_findURI
@@ -319,6 +319,122 @@ namespace mySnapshot
             this.pnl_snapshot_picbx.Size = new System.Drawing.Size(775, 425);
             this.pnl_snapshot_picbx.TabIndex = 1;
             // 
+            // panel1
+            // 
+            this.tpl_snapshot.SetColumnSpan(this.panel1, 3);
+            this.panel1.Controls.Add(this.tlp_file_info);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(3, 439);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(1114, 34);
+            this.panel1.TabIndex = 2;
+            // 
+            // tlp_file_info
+            // 
+            this.tlp_file_info.ColumnCount = 9;
+            this.tlp_file_info.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
+            this.tlp_file_info.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 5F));
+            this.tlp_file_info.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.tlp_file_info.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 5F));
+            this.tlp_file_info.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.tlp_file_info.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 5F));
+            this.tlp_file_info.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30F));
+            this.tlp_file_info.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 5F));
+            this.tlp_file_info.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.tlp_file_info.Controls.Add(this.pnl_filename, 0, 0);
+            this.tlp_file_info.Controls.Add(this.pnl_filesize, 2, 0);
+            this.tlp_file_info.Controls.Add(this.pnl_retries, 4, 0);
+            this.tlp_file_info.Controls.Add(this.pnl_save_folder, 6, 0);
+            this.tlp_file_info.Controls.Add(this.pnl_unique_num, 8, 0);
+            this.tlp_file_info.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlp_file_info.Location = new System.Drawing.Point(0, 0);
+            this.tlp_file_info.Name = "tlp_file_info";
+            this.tlp_file_info.RowCount = 1;
+            this.tlp_file_info.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlp_file_info.Size = new System.Drawing.Size(1114, 34);
+            this.tlp_file_info.TabIndex = 0;
+            // 
+            // pnl_filename
+            // 
+            this.pnl_filename.Controls.Add(this.lbl_file_name);
+            this.pnl_filename.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnl_filename.Location = new System.Drawing.Point(3, 3);
+            this.pnl_filename.Name = "pnl_filename";
+            this.pnl_filename.Size = new System.Drawing.Size(431, 28);
+            this.pnl_filename.TabIndex = 0;
+            // 
+            // lbl_file_name
+            // 
+            this.lbl_file_name.AutoSize = true;
+            this.lbl_file_name.Location = new System.Drawing.Point(7, 4);
+            this.lbl_file_name.Name = "lbl_file_name";
+            this.lbl_file_name.Size = new System.Drawing.Size(80, 20);
+            this.lbl_file_name.TabIndex = 0;
+            this.lbl_file_name.Text = "File Name";
+            // 
+            // pnl_filesize
+            // 
+            this.pnl_filesize.Controls.Add(this.lbl_file_size);
+            this.pnl_filesize.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnl_filesize.Location = new System.Drawing.Point(445, 3);
+            this.pnl_filesize.Name = "pnl_filesize";
+            this.pnl_filesize.Size = new System.Drawing.Size(103, 28);
+            this.pnl_filesize.TabIndex = 1;
+            // 
+            // lbl_file_size
+            // 
+            this.lbl_file_size.AutoSize = true;
+            this.lbl_file_size.Location = new System.Drawing.Point(3, 4);
+            this.lbl_file_size.Name = "lbl_file_size";
+            this.lbl_file_size.Size = new System.Drawing.Size(69, 20);
+            this.lbl_file_size.TabIndex = 0;
+            this.lbl_file_size.Text = "File Size";
+            // 
+            // pnl_retries
+            // 
+            this.pnl_retries.Controls.Add(this.lbl_retries);
+            this.pnl_retries.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnl_retries.Location = new System.Drawing.Point(559, 3);
+            this.pnl_retries.Name = "pnl_retries";
+            this.pnl_retries.Size = new System.Drawing.Size(103, 28);
+            this.pnl_retries.TabIndex = 2;
+            // 
+            // lbl_retries
+            // 
+            this.lbl_retries.AutoSize = true;
+            this.lbl_retries.Location = new System.Drawing.Point(3, 4);
+            this.lbl_retries.Name = "lbl_retries";
+            this.lbl_retries.Size = new System.Drawing.Size(60, 20);
+            this.lbl_retries.TabIndex = 0;
+            this.lbl_retries.Text = "Retries";
+            // 
+            // pnl_save_folder
+            // 
+            this.pnl_save_folder.Controls.Add(this.lbl_save_folder);
+            this.pnl_save_folder.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnl_save_folder.Location = new System.Drawing.Point(673, 3);
+            this.pnl_save_folder.Name = "pnl_save_folder";
+            this.pnl_save_folder.Size = new System.Drawing.Size(322, 28);
+            this.pnl_save_folder.TabIndex = 3;
+            // 
+            // lbl_save_folder
+            // 
+            this.lbl_save_folder.AutoSize = true;
+            this.lbl_save_folder.Location = new System.Drawing.Point(3, 4);
+            this.lbl_save_folder.Name = "lbl_save_folder";
+            this.lbl_save_folder.Size = new System.Drawing.Size(94, 20);
+            this.lbl_save_folder.TabIndex = 0;
+            this.lbl_save_folder.Text = "Save Folder";
+            // 
+            // pnl_unique_num
+            // 
+            this.pnl_unique_num.Controls.Add(this.txtbx_unique_number);
+            this.pnl_unique_num.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnl_unique_num.Location = new System.Drawing.Point(1006, 3);
+            this.pnl_unique_num.Name = "pnl_unique_num";
+            this.pnl_unique_num.Size = new System.Drawing.Size(105, 28);
+            this.pnl_unique_num.TabIndex = 4;
+            // 
             // tab_web_browser
             // 
             this.tab_web_browser.Controls.Add(this.pnl_web_browser);
@@ -505,130 +621,13 @@ namespace mySnapshot
             this.pnl_camera_ip_address_txtbx.Size = new System.Drawing.Size(370, 31);
             this.pnl_camera_ip_address_txtbx.TabIndex = 5;
             // 
-            // panel1
+            // txtbx_unique_number
             // 
-            this.tpl_snapshot.SetColumnSpan(this.panel1, 3);
-            this.panel1.Controls.Add(this.tlp_file_info);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(3, 439);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1114, 34);
-            this.panel1.TabIndex = 2;
-            // 
-            // tlp_file_info
-            // 
-            this.tlp_file_info.ColumnCount = 9;
-            this.tlp_file_info.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
-            this.tlp_file_info.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 5F));
-            this.tlp_file_info.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10F));
-            this.tlp_file_info.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 5F));
-            this.tlp_file_info.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10F));
-            this.tlp_file_info.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 5F));
-            this.tlp_file_info.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30F));
-            this.tlp_file_info.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 5F));
-            this.tlp_file_info.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10F));
-            this.tlp_file_info.Controls.Add(this.pnl_filename, 0, 0);
-            this.tlp_file_info.Controls.Add(this.pnl_filesize, 2, 0);
-            this.tlp_file_info.Controls.Add(this.pnl_retries, 4, 0);
-            this.tlp_file_info.Controls.Add(this.pnl_save_folder, 6, 0);
-            this.tlp_file_info.Controls.Add(this.pnl_unique_num, 8, 0);
-            this.tlp_file_info.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlp_file_info.Location = new System.Drawing.Point(0, 0);
-            this.tlp_file_info.Name = "tlp_file_info";
-            this.tlp_file_info.RowCount = 1;
-            this.tlp_file_info.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlp_file_info.Size = new System.Drawing.Size(1114, 34);
-            this.tlp_file_info.TabIndex = 0;
-            // 
-            // pnl_filename
-            // 
-            this.pnl_filename.Controls.Add(this.lbl_file_name);
-            this.pnl_filename.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnl_filename.Location = new System.Drawing.Point(3, 3);
-            this.pnl_filename.Name = "pnl_filename";
-            this.pnl_filename.Size = new System.Drawing.Size(431, 28);
-            this.pnl_filename.TabIndex = 0;
-            // 
-            // pnl_filesize
-            // 
-            this.pnl_filesize.Controls.Add(this.lbl_file_size);
-            this.pnl_filesize.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnl_filesize.Location = new System.Drawing.Point(445, 3);
-            this.pnl_filesize.Name = "pnl_filesize";
-            this.pnl_filesize.Size = new System.Drawing.Size(103, 28);
-            this.pnl_filesize.TabIndex = 1;
-            // 
-            // pnl_retries
-            // 
-            this.pnl_retries.Controls.Add(this.lbl_retries);
-            this.pnl_retries.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnl_retries.Location = new System.Drawing.Point(559, 3);
-            this.pnl_retries.Name = "pnl_retries";
-            this.pnl_retries.Size = new System.Drawing.Size(103, 28);
-            this.pnl_retries.TabIndex = 2;
-            // 
-            // lbl_file_name
-            // 
-            this.lbl_file_name.AutoSize = true;
-            this.lbl_file_name.Location = new System.Drawing.Point(7, 4);
-            this.lbl_file_name.Name = "lbl_file_name";
-            this.lbl_file_name.Size = new System.Drawing.Size(80, 20);
-            this.lbl_file_name.TabIndex = 0;
-            this.lbl_file_name.Text = "File Name";
-            // 
-            // lbl_file_size
-            // 
-            this.lbl_file_size.AutoSize = true;
-            this.lbl_file_size.Location = new System.Drawing.Point(3, 4);
-            this.lbl_file_size.Name = "lbl_file_size";
-            this.lbl_file_size.Size = new System.Drawing.Size(69, 20);
-            this.lbl_file_size.TabIndex = 0;
-            this.lbl_file_size.Text = "File Size";
-            // 
-            // lbl_retries
-            // 
-            this.lbl_retries.AutoSize = true;
-            this.lbl_retries.Location = new System.Drawing.Point(3, 4);
-            this.lbl_retries.Name = "lbl_retries";
-            this.lbl_retries.Size = new System.Drawing.Size(60, 20);
-            this.lbl_retries.TabIndex = 0;
-            this.lbl_retries.Text = "Retries";
-            // 
-            // pnl_save_folder
-            // 
-            this.pnl_save_folder.Controls.Add(this.lbl_save_folder);
-            this.pnl_save_folder.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnl_save_folder.Location = new System.Drawing.Point(673, 3);
-            this.pnl_save_folder.Name = "pnl_save_folder";
-            this.pnl_save_folder.Size = new System.Drawing.Size(322, 28);
-            this.pnl_save_folder.TabIndex = 3;
-            // 
-            // lbl_save_folder
-            // 
-            this.lbl_save_folder.AutoSize = true;
-            this.lbl_save_folder.Location = new System.Drawing.Point(3, 4);
-            this.lbl_save_folder.Name = "lbl_save_folder";
-            this.lbl_save_folder.Size = new System.Drawing.Size(94, 20);
-            this.lbl_save_folder.TabIndex = 0;
-            this.lbl_save_folder.Text = "Save Folder";
-            // 
-            // pnl_unique_num
-            // 
-            this.pnl_unique_num.Controls.Add(this.lbl_unique_number);
-            this.pnl_unique_num.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnl_unique_num.Location = new System.Drawing.Point(1006, 3);
-            this.pnl_unique_num.Name = "pnl_unique_num";
-            this.pnl_unique_num.Size = new System.Drawing.Size(105, 28);
-            this.pnl_unique_num.TabIndex = 4;
-            // 
-            // lbl_unique_number
-            // 
-            this.lbl_unique_number.AutoSize = true;
-            this.lbl_unique_number.Location = new System.Drawing.Point(3, 4);
-            this.lbl_unique_number.Name = "lbl_unique_number";
-            this.lbl_unique_number.Size = new System.Drawing.Size(97, 20);
-            this.lbl_unique_number.TabIndex = 0;
-            this.lbl_unique_number.Text = "Unique Num";
+            this.txtbx_unique_number.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtbx_unique_number.Location = new System.Drawing.Point(0, 0);
+            this.txtbx_unique_number.Name = "txtbx_unique_number";
+            this.txtbx_unique_number.Size = new System.Drawing.Size(105, 26);
+            this.txtbx_unique_number.TabIndex = 0;
             // 
             // Form1
             // 
@@ -649,6 +648,18 @@ namespace mySnapshot
             this.tpl_snapshot.ResumeLayout(false);
             this.pnl_snapshot_rchtxtbx.ResumeLayout(false);
             this.pnl_snapshot_picbx.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
+            this.tlp_file_info.ResumeLayout(false);
+            this.pnl_filename.ResumeLayout(false);
+            this.pnl_filename.PerformLayout();
+            this.pnl_filesize.ResumeLayout(false);
+            this.pnl_filesize.PerformLayout();
+            this.pnl_retries.ResumeLayout(false);
+            this.pnl_retries.PerformLayout();
+            this.pnl_save_folder.ResumeLayout(false);
+            this.pnl_save_folder.PerformLayout();
+            this.pnl_unique_num.ResumeLayout(false);
+            this.pnl_unique_num.PerformLayout();
             this.tab_web_browser.ResumeLayout(false);
             this.pnl_web_browser.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.webview_browser)).EndInit();
@@ -666,18 +677,6 @@ namespace mySnapshot
             this.pnl_password_txtbx.PerformLayout();
             this.pnl_camera_ip_address_txtbx.ResumeLayout(false);
             this.pnl_camera_ip_address_txtbx.PerformLayout();
-            this.panel1.ResumeLayout(false);
-            this.tlp_file_info.ResumeLayout(false);
-            this.pnl_filename.ResumeLayout(false);
-            this.pnl_filename.PerformLayout();
-            this.pnl_filesize.ResumeLayout(false);
-            this.pnl_filesize.PerformLayout();
-            this.pnl_retries.ResumeLayout(false);
-            this.pnl_retries.PerformLayout();
-            this.pnl_save_folder.ResumeLayout(false);
-            this.pnl_save_folder.PerformLayout();
-            this.pnl_unique_num.ResumeLayout(false);
-            this.pnl_unique_num.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -730,7 +729,7 @@ namespace mySnapshot
         private System.Windows.Forms.Panel pnl_save_folder;
         private System.Windows.Forms.Label lbl_save_folder;
         private System.Windows.Forms.Panel pnl_unique_num;
-        private System.Windows.Forms.Label lbl_unique_number;
+        private System.Windows.Forms.TextBox txtbx_unique_number;
     }
 }
 

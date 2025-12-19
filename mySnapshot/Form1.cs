@@ -34,7 +34,7 @@ namespace mySnapshot
             btn_start_capture.Visible = true;
             btn_stop_capture.Visible = false;
 
-            lbl_unique_number.Text = "0";
+            txtbx_unique_number.Text = "0";
 
             // TimeLapse Folder management - Ensure today's folder exists
             try
@@ -161,7 +161,7 @@ namespace mySnapshot
                     picbx_image,
                     txtbx_camera_ip_address.Text, txtbx_username.Text, txtbx_password.Text,
                     lbl_file_name, lbl_file_size, lbl_retries, lbl_save_folder,
-                    lbl_unique_number, BaseFolder);
+                    txtbx_unique_number, BaseFolder);
                 rchtxtbx_snapshot_results.AppendText("\r\nCapture started........");
             }
             else

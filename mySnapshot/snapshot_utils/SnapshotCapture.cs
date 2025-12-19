@@ -17,7 +17,7 @@ namespace mySnapshot.snapshot_utils
     {
         public static async Task RunSnapshotCaptureLoop(CancellationToken token, RichTextBox myRichTextBox,
             PictureBox myPictureBox, string myIPAddress, string myUsername, string myPassword,
-            Label myFilename_label, Label myFilesize_label, Label myRetries_label, Label myPathLabel, Label myUniqueNumber,
+            Label myFilename_label, Label myFilesize_label, Label myRetries_label, Label myPathLabel, TextBox myUniqueNumber,
             string myBaseFolder)
         {
             int counter;
@@ -34,20 +34,23 @@ namespace mySnapshot.snapshot_utils
                 while (!token.IsCancellationRequested)
                 {
                     counter = int.Parse(myUniqueNumber.Text);
-                    string fileName = Path.Combine(myPathLabel.Text, $"{DateTime.Now:ddMMyyyy_HHmmss}_{counter++}.jpg");
-                    myUniqueNumber.Text = counter.ToString();
 
                     // Get today's date (ignoring time)
                     DateTime today = DateTime.Now.Date;
 
-                    // Check if the date has changed to a new day
+                    // Check if the date has changed to a new day before we create the filename
                     if (today > currentDate)
                     {
                         myUniqueNumber.Text = "0"; //reset the counter
                         myRichTextBox.Clear();     //Clear the Richtextbox of data
                         currentDate = today;
                         FolderUtils.CreateDateFolder(DateTime.Now, myRichTextBox, myPathLabel, myBaseFolder);
+                        await Task.Delay(50, token); //waits 50ms 
                     }
+
+                    // create the file name after we have checked what day of month it is.
+                    string fileName = Path.Combine(myPathLabel.Text, $"{DateTime.Now:ddMMyyyy_HHmmss}_{counter++}.jpg");
+                    myUniqueNumber.Text = counter.ToString();
 
                     bool retry = true;
 
