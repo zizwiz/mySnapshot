@@ -38,14 +38,16 @@ namespace mySnapshot.snapshot_utils
                     // Get today's date (ignoring time)
                     DateTime today = DateTime.Now.Date;
 
-                    // Check if the date has changed to a new day before we create the filename
+                    // Check if the date has changed to a new day before we create the filename and resync clock
                     if (today > currentDate)
                     {
                         myUniqueNumber.Text = "0"; //reset the counter
                         myRichTextBox.Clear();     //Clear the Richtextbox of data
                         currentDate = today;
                         FolderUtils.CreateDateFolder(DateTime.Now, myRichTextBox, myPathLabel, myBaseFolder);
-                        await Task.Delay(50, token); //waits 50ms 
+                        await Task.Delay(5, token); //waits 5ms 
+                        TimeUtils.SetTime(myRichTextBox, myIPAddress, myUsername, myPassword);//sync clock
+                        await Task.Delay(50, token); //waits 45ms
                     }
 
                     // create the file name after we have checked what day of month it is.
