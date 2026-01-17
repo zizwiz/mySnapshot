@@ -162,6 +162,7 @@ namespace mySnapshot
                     txtbx_camera_ip_address.Text, txtbx_username.Text, txtbx_password.Text,
                     lbl_file_name, lbl_file_size, lbl_retries, lbl_save_folder,
                     txtbx_unique_number, BaseFolder);
+                
                 rchtxtbx_snapshot_results.AppendText("\r\nCapture started........");
             }
             else

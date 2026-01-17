@@ -4,6 +4,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.Linq;
 
 namespace mySnapshot.utilities
 {
@@ -52,5 +53,33 @@ namespace mySnapshot.utilities
                 }
             }
         }
+
+        public static async Task GetTime(RichTextBox myRichTextBox, string myCameraIP, string myUsername,
+            string myPassword)
+        {
+            // Build Basic Auth header
+            var authToken = Convert.ToBase64String(Encoding.ASCII.GetBytes($"{myUsername}:{myPassword}"));
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri($"http://{myCameraIP}/");
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", authToken);
+
+            }
+
+            //if (response.IsSuccessStatusCode)
+            //{
+            //    myRichTextBox.AppendText("\r\nTime sync successfull");
+            //    string resp = await response.Content.ReadAsStringAsync();
+            //    myRichTextBox.AppendText("\r\n" + resp);
+            //}
+            //else
+            //{
+            //    myRichTextBox.AppendText($"\r\nFailed to sync time. Status: {response.StatusCode}");
+            //    string resp = await response.Content.ReadAsStringAsync();
+            //    myRichTextBox.AppendText("\r\n" + resp);
+            //}
+        }
     }
 }
+
